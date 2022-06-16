@@ -48,21 +48,21 @@ namespace MemeBox.Stores
 
             if (!File.Exists(UserSoundsFilePath))
             {
-                var xml = new XElement("UserSounds");
+                var xml = new XElement(nameof(UserSounds));
                 new XDocument(xml).Save(UserSoundsFilePath);
             }
             else
             {
                 var xDoc = XDocument.Load(UserSoundsFilePath);
-                Sound dummySound = new();
+                Sound refS = new();
 
                 var soundList = (from sounds in xDoc.Descendants("UserSounds").Elements("UserSound")
                                  select new Sound
                                  {
-                                     Name = sounds.Attribute(nameof(dummySound.Name)).Value.ToString(),
-                                     Path = sounds.Attribute(nameof(dummySound.Path)).Value.ToString(),
-                                     HotKey = new HotKey((Key)Enum.Parse(typeof(Key), sounds.Element("KeyBind").Attribute("Key").Value.ToString()),
-                                                           ((ModifierKeys)Enum.Parse(typeof(ModifierKeys), sounds.Element("KeyBind").Attribute("Modifiers").Value.ToString())))
+                                     Name = sounds.Attribute(nameof(refS.Name)).Value.ToString(),
+                                     Path = sounds.Attribute(nameof(refS.Path)).Value.ToString(),
+                                     HotKey = new HotKey((Key)Enum.Parse(typeof(Key), sounds.Element(nameof(refS.HotKey)).Attribute(nameof(refS.HotKey.Key)).Value.ToString()),
+                                                         (ModifierKeys)Enum.Parse(typeof(ModifierKeys), sounds.Element(nameof(refS.HotKey)).Attribute(nameof(refS.HotKey.Modifiers)).Value.ToString()))
                                  }).ToList();
 
                 UserSounds = new BindingList<Sound>(soundList);
