@@ -1,5 +1,4 @@
-﻿using MemeBox.Services;
-using MemeBox.Stores;
+﻿using MemeBox.Stores;
 using MemeBox.ViewModels;
 using System;
 using System.Collections.Generic;

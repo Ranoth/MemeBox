@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MemeBox.Models;
-using MemeBox.Services;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
