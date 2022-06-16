@@ -122,10 +122,10 @@ namespace MemeBox.ViewModels
             var list = sender as BindingList<Sound>;
             var changeType = e.ListChangedType;
             var xDoc = XDocument.Load(settingsStore.UserSoundsFilePath);
-            var sound = list[e.NewIndex];
 
             if (changeType == ListChangedType.ItemChanged)
             {
+                var sound = list[e.NewIndex];
                 var xQuery = from elements in xDoc.Descendants("UserSounds").Elements("UserSound")
                              where elements.Attribute(nameof(sound.Name)).Value == sound.Name
                              select elements;
@@ -142,13 +142,15 @@ namespace MemeBox.ViewModels
             }
             else if (changeType == ListChangedType.ItemDeleted)
             {
+                Sound refS = new();
                 xDoc.Descendants("UserSounds").Elements("UserSound")
-                .Where(x => x.Attribute(nameof(sound.Name)).Value == removedSound.Name).FirstOrDefault().Remove();
+                .Where(x => x.Attribute(nameof(refS.Name)).Value == removedSound.Name).FirstOrDefault().Remove();
 
                 xDoc.Save(settingsStore.UserSoundsFilePath);
             }
             else if (changeType == ListChangedType.ItemAdded)
             {
+                var sound = list[e.NewIndex];
                 xDoc.Element("UserSounds").Add(
                     new XElement("UserSound",
                         new XAttribute(nameof(sound.Name), sound.Name),
