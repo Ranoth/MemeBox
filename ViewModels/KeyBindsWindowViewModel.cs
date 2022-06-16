@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GlobalKeyboardHooker;
 using MemeBox.Models;
 using MemeBox.Stores;
 using MemeBox.Views;
@@ -21,7 +22,7 @@ namespace MemeBox.ViewModels
         private Sound soundToUpdate;
         private KeysBindsWindow view;
 
-        public KeyBind KeyToBind { get; set; }
+        public HotKey KeyToBind { get; set; }
         public string NameSoundToUpdate
         {
             get => soundToUpdate.Name;
@@ -54,27 +55,27 @@ namespace MemeBox.ViewModels
                 return;
             }
 
-            KeyToBind = new KeyBind(key, mod);
+            KeyToBind = new HotKey(key, mod);
             SetBind();
         }
         public void SetBind()
         {
             var sound = settingsStore.UserSounds.SingleOrDefault(x =>
             {
-                if (x.KeyBind.Key == KeyToBind.Key && x.KeyBind.Modifiers == KeyToBind.Modifiers) return true;
+                if (x.HotKey.Key == KeyToBind.Key && x.HotKey.Modifiers == KeyToBind.Modifiers) return true;
                 else return false;
             });
             if (sound == null)
             {
-                soundToUpdate.KeyBind = KeyToBind;
+                soundToUpdate.HotKey = KeyToBind;
                 view.Close();
             }
             else if (System.Windows.Forms.MessageBox.Show("This key has already been bound, clear old KeyBind to assign it to the new sound ?", "", MessageBoxButtons.YesNo) ==
                     DialogResult.Yes)
             {
 
-                sound.KeyBind = new KeyBind(Key.None, ModifierKeys.None);
-                soundToUpdate.KeyBind = KeyToBind;
+                sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
+                soundToUpdate.HotKey = KeyToBind;
                 view.Close();
             }
         }
@@ -82,11 +83,11 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void ClearBind()
         {
-            if (soundToUpdate.KeyBind.Key != Key.None)
+            if (soundToUpdate.HotKey.Key != Key.None)
             {
                 if (System.Windows.Forms.MessageBox.Show("Do you truly wish to clear this sound's bound key ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    soundToUpdate.KeyBind = new KeyBind(Key.None, ModifierKeys.None);
+                    soundToUpdate.HotKey = new HotKey(Key.None, ModifierKeys.None);
                     view.Close();
                 }
             }

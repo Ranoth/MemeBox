@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GlobalKeyboardHooker;
 using MemeBox.Commands;
 using MemeBox.Models;
-using MemeBox.Services;
 using MemeBox.Stores;
 using MemeBox.Views;
 using System;
@@ -103,7 +103,7 @@ namespace MemeBox.ViewModels
         {
             if (!e.KeyboardState.HasFlag(GlobalKeyboardHook.KeyboardState.KeyUp))
             {
-                var key = new KeyBind(KeyInterop.KeyFromVirtualKey((int)e.KeyboardData.Key), Keyboard.Modifiers);
+                var key = new HotKey(KeyInterop.KeyFromVirtualKey((int)e.KeyboardData.Key), Keyboard.Modifiers);
 
                 try
                 {
@@ -112,7 +112,7 @@ namespace MemeBox.ViewModels
                     {
                         var sound = settingsStore.UserSounds.SingleOrDefault(x =>
                         {
-                            if (x.KeyBind.Key == key.Key && x.KeyBind.Modifiers == key.Modifiers) return true;
+                            if (x.HotKey.Key == key.Key && x.HotKey.Modifiers == key.Modifiers) return true;
                             else return false;
                         });
 
@@ -125,7 +125,7 @@ namespace MemeBox.ViewModels
                 catch (InvalidOperationException)
                 {
                     MessageBox.Show("Cannot use duplicate keybinds");
-                    settingsStore.UserSounds.LastOrDefault(x => x.KeyBind == key).KeyBind = new KeyBind(Key.None, ModifierKeys.None);
+                    settingsStore.UserSounds.LastOrDefault(x => x.HotKey == key).HotKey = new HotKey(Key.None, ModifierKeys.None);
                 }
             }
         }

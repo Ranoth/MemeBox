@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using GlobalKeyboardHooker;
 using MemeBox.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace MemeBox.Models
     public partial class Sound : ObservableObject
     {
         private string name;
-        private KeyBind keyBind = new KeyBind(Key.None, ModifierKeys.None);
+        private HotKey hotKey = new HotKey(Key.None, ModifierKeys.None);
         [ObservableProperty]
         private string nameBind;
 
@@ -28,19 +29,19 @@ namespace MemeBox.Models
         }
 
         public string Path { get; set; }
-        public KeyBind KeyBind
+        public HotKey HotKey
         {
-            get => keyBind;
+            get => hotKey;
             set
             {
-                SetProperty(ref keyBind, value);
+                SetProperty(ref hotKey, value);
                 SetNameBind();
             }
         }
 
         private void SetNameBind()
         {
-            string bind = KeyBind.ToString();
+            string bind = HotKey.ToString();
 
             if (bind == "None") bind = String.Empty;
             else if (bind != String.Empty) bind = bind.Insert(0, " -> ");

@@ -1,5 +1,6 @@
-﻿using MemeBox.Models;
-using MemeBox.Services;
+﻿using EasyXml;
+using GlobalKeyboardHooker;
+using MemeBox.Models;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System;
@@ -60,7 +61,7 @@ namespace MemeBox.Stores
                                  {
                                      Name = sounds.Attribute(nameof(dummySound.Name)).Value.ToString(),
                                      Path = sounds.Attribute(nameof(dummySound.Path)).Value.ToString(),
-                                     KeyBind = new KeyBind((Key)Enum.Parse(typeof(Key), sounds.Element("KeyBind").Attribute("Key").Value.ToString()),
+                                     HotKey = new HotKey((Key)Enum.Parse(typeof(Key), sounds.Element("KeyBind").Attribute("Key").Value.ToString()),
                                                            ((ModifierKeys)Enum.Parse(typeof(ModifierKeys), sounds.Element("KeyBind").Attribute("Modifiers").Value.ToString())))
                                  }).ToList();
 
@@ -82,11 +83,11 @@ namespace MemeBox.Stores
                 var waveOut = AudioOutCapabilities.Find(x => device.FriendlyName.Contains(x.ProductName));
 
                 Settings = new Settings { SetOut = waveOut.ProductName };
-                XmlService.XmlDataWriter(Settings, SettingsFilePath);
+                XmlBroker.XmlDataWriter(Settings, SettingsFilePath);
             }
             else
             {
-                Settings = XmlService.XmlDataReader<Settings>(SettingsFilePath);
+                Settings = XmlBroker.XmlDataReader<Settings>(SettingsFilePath);
             }
         }
     }

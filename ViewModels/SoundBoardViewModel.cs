@@ -17,12 +17,12 @@ using System.Windows.Media;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using NAudio.Wave;
-using MemeBox.Services;
 using System.IO;
 using System.Xml.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using System.Windows.Forms;
+using GlobalKeyboardHooker;
 
 namespace MemeBox.ViewModels
 {
@@ -134,8 +134,8 @@ namespace MemeBox.ViewModels
                 {
                     element.SetAttributeValue(nameof(sound.Name), sound.Name);
                     element.SetAttributeValue(nameof(sound.Path), sound.Path);
-                    element.Element(nameof(sound.KeyBind)).SetAttributeValue(nameof(sound.KeyBind.Key), sound.KeyBind.Key.ToString());
-                    element.Element(nameof(sound.KeyBind)).SetAttributeValue(nameof(sound.KeyBind.Modifiers), sound.KeyBind.Modifiers.ToString());
+                    element.Element(nameof(sound.HotKey)).SetAttributeValue(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString());
+                    element.Element(nameof(sound.HotKey)).SetAttributeValue(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString());
                 }
 
                 xDoc.Save(settingsStore.UserSoundsFilePath);
@@ -153,9 +153,9 @@ namespace MemeBox.ViewModels
                     new XElement("UserSound",
                         new XAttribute(nameof(sound.Name), sound.Name),
                         new XAttribute(nameof(sound.Path), sound.Path),
-                            new XElement(nameof(sound.KeyBind),
-                                new XAttribute(nameof(sound.KeyBind.Key), sound.KeyBind.Key.ToString()),
-                                new XAttribute(nameof(sound.KeyBind.Modifiers), sound.KeyBind.Modifiers.ToString()))));
+                            new XElement(nameof(sound.HotKey),
+                                new XAttribute(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString()),
+                                new XAttribute(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString()))));
 
                 xDoc.Save(settingsStore.UserSoundsFilePath);
             }
@@ -191,11 +191,11 @@ namespace MemeBox.ViewModels
         private void ClearKeyBind(string soundName)
         {
             var sound = Sounds.SingleOrDefault(x => x.Name == soundName);
-            if (sound.KeyBind.Key != Key.None)
+            if (sound.HotKey.Key != Key.None)
             {
                 if (System.Windows.Forms.MessageBox.Show("Do you truly wish to clear this sound's bound key ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    sound.KeyBind = new KeyBind(Key.None, ModifierKeys.None);
+                    sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
                 }
             }
         }

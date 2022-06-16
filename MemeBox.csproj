@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <Folder Include="Messages\" />
+    <Folder Include="Services\" />
     <Folder Include="ValueConverters\" />
   </ItemGroup>
 
@@ -56,6 +57,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NAudio" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EasyXml">
+      <HintPath>..\EasyXml\bin\Release\net6.0\EasyXml.dll</HintPath>
+    </Reference>
+    <Reference Include="GlobalKeyboardHooker">
+      <HintPath>..\GlobalKeyboardHooker\bin\Release\net6.0-windows\GlobalKeyboardHooker.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
