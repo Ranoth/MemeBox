@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using MemeBox.Stores;
+using EasyXml;
 
 namespace MemeBox.ViewModels
 {
@@ -90,7 +91,7 @@ namespace MemeBox.ViewModels
             try
             {
                 UpdateSettingsStore();
-                XmlService.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
+                XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
             }
             catch (Exception ex)
             {
