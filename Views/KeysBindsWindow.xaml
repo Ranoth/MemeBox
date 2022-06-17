@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MemeBox.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Key Binder" Background="SlateGray" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
+        Title="Key Binder" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
         Icon="/Images/appIcon.png">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         
         <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="5,2,5,0">Press the key you wish to bind</TextBlock>
-        <Button Grid.Column="0" Grid.Row="1" Width="80" Content="Clear" Margin="5,5,5,3"
+        <Button Grid.Column="0" Grid.Row="1" Width="80" Content="Clear" Margin="5,5,5,3" 
                 Command="{Binding ClearBindCommand}"/>
         <Button Grid.Column="1" Grid.Row="1" Width="80" Content="Cancel" Margin="5,5,5,3"
                 Command="{Binding CancelCommand}"/>
