@@ -9,8 +9,12 @@ using System.IO;
 using System.Xml.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using System.Windows.Forms;
 using GlobalKeyboardHooker;
+using System.Windows;
+using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
+using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
+using MessageBoxResult = System.Windows.Forms.DialogResult;
 
 namespace MemeBox.ViewModels
 {
@@ -63,7 +67,7 @@ namespace MemeBox.ViewModels
             }
             catch (Exception ex)
             {
-                if (ex.GetType() == typeof(COMException)) System.Windows.MessageBox.Show("File format unsupported by the application, please try any audio file format supported by " +
+                if (ex.GetType() == typeof(COMException)) MessageBox.Show("File format unsupported by the application, please try any audio file format supported by " +
                 "Windows Media Foundation");
             }
         }
@@ -156,7 +160,7 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void RemoveButton(string soundName)
         {
-            if (MessageBox.Show("Do you truly wish to remove this button ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Do you truly wish to remove this button ?", "Remove Button", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 RemoveSound(soundName);
             }
@@ -185,7 +189,7 @@ namespace MemeBox.ViewModels
             var sound = Sounds.SingleOrDefault(x => x.Name == soundName);
             if (sound.HotKey.Key != Key.None)
             {
-                if (MessageBox.Show("Do you truly wish to clear this sound's bound key ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Do you truly wish to clear this sound's bound key ?", "Remove Bind", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
                 }
@@ -195,9 +199,9 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void AddSoundWindow()
         {
-            OpenFileDialog openFileDialog = new();
+            System.Windows.Forms.OpenFileDialog openFileDialog = new();
             openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+            if (openFileDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
             var sound = new Sound { Name = openFileDialog.SafeFileName, Path = openFileDialog.FileName };
             sound.Name = sound.Name.Remove(sound.Name.LastIndexOf('.'));

@@ -7,5 +7,9 @@ namespace MemeBox
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            System.Windows.Forms.Application.EnableVisualStyles();
+        }
     }
 }
