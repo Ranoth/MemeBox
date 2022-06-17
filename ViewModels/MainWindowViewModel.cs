@@ -1,21 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GlobalKeyboardHooker;
 using MemeBox.Commands;
-using MemeBox.Models;
 using MemeBox.Stores;
 using MemeBox.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Xml.Linq;
+using GlobalKeyboardHooker;
 
 namespace MemeBox.ViewModels
 {

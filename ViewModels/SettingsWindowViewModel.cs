@@ -1,15 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MemeBox.Models;
+﻿using MemeBox.Models;
 using NAudio.Wave;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using CommunityToolkit.Mvvm.Messaging;
 using MemeBox.Stores;
 using EasyXml;
 

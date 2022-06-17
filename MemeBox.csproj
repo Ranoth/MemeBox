@@ -11,6 +11,7 @@
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>$(AssemblyVersion)</Version>
     <ApplicationIcon>Images\appIcon.ico</ApplicationIcon>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,11 +61,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="EasyXml">
-      <HintPath>..\EasyXml\bin\Release\net6.0\EasyXml.dll</HintPath>
-    </Reference>
-    <Reference Include="GlobalKeyboardHooker">
-      <HintPath>..\GlobalKeyboardHooker\bin\Release\net6.0-windows\GlobalKeyboardHooker.dll</HintPath>
+    <Reference Include="UtilsBox">
+      <HintPath>..\UtilsBox\bin\Release\net6.0-windows\UtilsBox.dll</HintPath>
     </Reference>
   </ItemGroup>
 
