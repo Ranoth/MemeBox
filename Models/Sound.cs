@@ -6,12 +6,12 @@ namespace MemeBox.Models
 {
     public partial class Sound : ObservableObject
     {
-        private string name;
+        private string? name;
         private HotKey hotKey = new HotKey(Key.None, ModifierKeys.None);
         [ObservableProperty]
-        private string nameBind;
+        private string? nameBind;
 
-        public string Name
+        public string? Name
         {
             get => name;
             set
@@ -21,7 +21,7 @@ namespace MemeBox.Models
             }
         }
 
-        public string Path { get; set; }
+        public string? Path { get; set; }
         public HotKey HotKey
         {
             get => hotKey;

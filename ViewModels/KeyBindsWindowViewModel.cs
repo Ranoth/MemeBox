@@ -14,11 +14,7 @@ namespace MemeBox.ViewModels
         private Sound soundToUpdate;
         private KeysBindsWindow view;
 
-        public HotKey KeyToBind { get; set; }
-        public string NameSoundToUpdate
-        {
-            get => soundToUpdate.Name;
-        }
+        public HotKey? KeyToBind { get; set; }
         public KeyBindsWindowViewModel(SettingsStore settingsStore, Sound soundToUpdate, KeysBindsWindow view)
         {
             this.settingsStore = settingsStore;
@@ -62,7 +58,7 @@ namespace MemeBox.ViewModels
                 soundToUpdate.HotKey = KeyToBind;
                 view.Close();
             }
-            else if (System.Windows.Forms.MessageBox.Show("This key has already been bound, clear old KeyBind to assign it to the new sound ?", "", MessageBoxButtons.YesNo) ==
+            else if (MessageBox.Show("This key has already been bound, clear old KeyBind to assign it to the new sound ?", "", MessageBoxButtons.YesNo) ==
                     DialogResult.Yes)
             {
 
@@ -77,7 +73,7 @@ namespace MemeBox.ViewModels
         {
             if (soundToUpdate.HotKey.Key != Key.None)
             {
-                if (System.Windows.Forms.MessageBox.Show("Do you truly wish to clear this sound's bound key ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Do you truly wish to clear this sound's bound key ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     soundToUpdate.HotKey = new HotKey(Key.None, ModifierKeys.None);
                     view.Close();

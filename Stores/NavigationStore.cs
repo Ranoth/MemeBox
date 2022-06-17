@@ -4,8 +4,8 @@ namespace MemeBox.Stores
 {
     public class NavigationStore
     {
-        private ViewModelBase currentViewModel;
-        public ViewModelBase CurrentViewModel
+        private ViewModelBase? currentViewModel;
+        public ViewModelBase? CurrentViewModel
         {
             get => currentViewModel;
             set

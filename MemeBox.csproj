@@ -1,103 +1,100 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <PackageIcon>appIcon.png</PackageIcon>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>$(AssemblyVersion)</Version>
-    <ApplicationIcon>Images\appIcon.ico</ApplicationIcon>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<PackageIcon>appIcon.png</PackageIcon>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Version>$(AssemblyVersion)</Version>
+		<Platforms>AnyCPU;x64;x86</Platforms>
+		<ApplicationIcon>Images\appIcon.ico</ApplicationIcon>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Releases\**" />
-    <EmbeddedResource Remove="Releases\**" />
-    <None Remove="Releases\**" />
-    <Page Remove="Releases\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Releases\**" />
+		<EmbeddedResource Remove="Releases\**" />
+		<None Remove="Releases\**" />
+		<Page Remove="Releases\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="deploy.bat" />
-    <None Remove="Images\appIcon.ico" />
-    <None Remove="Images\bindIcon.png" />
-    <None Remove="Images\delIcon.png" />
-    <None Remove="Images\playIcon.png" />
-    <None Remove="Images\plusButtonIcon.png" />
-    <None Remove="Images\removeIcon.png" />
-    <None Remove="Images\settingsButtonIcon.png" />
-    <None Remove="Images\stopPlaybackIcon.png" />
-    <None Remove="MemeBox.1.0.0.nupkg" />
-    <None Remove="publish.bat" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="deploy.bat" />
+		<None Remove="Images\appIcon.ico" />
+		<None Remove="Images\bindIcon.png" />
+		<None Remove="Images\delIcon.png" />
+		<None Remove="Images\playIcon.png" />
+		<None Remove="Images\plusButtonIcon.png" />
+		<None Remove="Images\removeIcon.png" />
+		<None Remove="Images\settingsButtonIcon.png" />
+		<None Remove="Images\stopPlaybackIcon.png" />
+		<None Remove="MemeBox.1.0.0.nupkg" />
+		<None Remove="publish.bat" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Images\appIcon.ico">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Images\appIcon.ico">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Messages\" />
-    <Folder Include="Services\" />
-    <Folder Include="ValueConverters\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Messages\" />
+		<Folder Include="Services\" />
+		<Folder Include="ValueConverters\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Common" Version="8.0.0-preview4" />
-    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0-preview4" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview4" />
-    <PackageReference Include="MSBuildTasks" Version="1.5.0.235">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="NAudio" Version="2.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Common" Version="8.0.0-preview4" />
+	  <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0-preview4" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview4" />
+	  <PackageReference Include="NAudio" Version="2.1.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="UtilsBox">
-      <HintPath>..\UtilsBox\bin\Release\net6.0-windows\UtilsBox.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="WPFUtilsBox">
+		  <HintPath>..\WPFUtilsBox\bin\Release\net6.0-windows\WPFUtilsBox.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Images\appIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\bindIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\delIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\playIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\plusButtonIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\removeIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\settingsButtonIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\stopPlaybackIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Images\appIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\bindIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\delIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\playIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\plusButtonIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\removeIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\settingsButtonIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\stopPlaybackIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Images\appIcon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Images\appIcon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

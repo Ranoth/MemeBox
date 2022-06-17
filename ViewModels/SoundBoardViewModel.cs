@@ -122,17 +122,19 @@ namespace MemeBox.ViewModels
                 {
                     element.SetAttributeValue(nameof(sound.Name), sound.Name);
                     element.SetAttributeValue(nameof(sound.Path), sound.Path);
-                    element.Element(nameof(sound.HotKey)).SetAttributeValue(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString());
-                    element.Element(nameof(sound.HotKey)).SetAttributeValue(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString());
+                    element.Element(nameof(sound.HotKey))
+                           .SetAttributeValue(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString());
+                    element.Element(nameof(sound.HotKey))
+                           .SetAttributeValue(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString());
                 }
 
                 xDoc.Save(settingsStore.UserSoundsFilePath);
             }
             else if (changeType == ListChangedType.ItemDeleted)
             {
-                Sound refS = new();
+                Sound _;
                 xDoc.Descendants("UserSounds").Elements("UserSound")
-                .Where(x => x.Attribute(nameof(refS.Name)).Value == removedSound.Name).FirstOrDefault().Remove();
+                    .FirstOrDefault(x => x.Attribute(nameof(_.Name)).Value == removedSound.Name).Remove();
 
                 xDoc.Save(settingsStore.UserSoundsFilePath);
             }
@@ -154,14 +156,14 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void RemoveButton(string soundName)
         {
-            if (System.Windows.Forms.MessageBox.Show("Do you truly wish to remove this button ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Do you truly wish to remove this button ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 RemoveSound(soundName);
             }
         }
         private void RemoveSound(string soundName)
         {
-            var sound = Sounds.LastOrDefault(x => x.Name == soundName);
+            Sound sound = Sounds.LastOrDefault(x => x.Name == soundName);
 
             removedSound = sound;
             settingsStore.UserSounds.Remove(sound);
@@ -183,7 +185,7 @@ namespace MemeBox.ViewModels
             var sound = Sounds.SingleOrDefault(x => x.Name == soundName);
             if (sound.HotKey.Key != Key.None)
             {
-                if (System.Windows.Forms.MessageBox.Show("Do you truly wish to clear this sound's bound key ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Do you truly wish to clear this sound's bound key ?", String.Empty, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
                 }
