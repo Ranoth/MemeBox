@@ -10,7 +10,6 @@ using System.Xml.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using GlobalKeyboardHooker;
-using System.Windows;
 using MessageBox = System.Windows.Forms.MessageBox;
 using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
@@ -160,7 +159,7 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void RemoveButton(string soundName)
         {
-            if (MessageBox.Show("Do you truly wish to remove this button ?", "Remove Button", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Do you truly wish to remove {soundName} ?", "Remove Button", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 RemoveSound(soundName);
             }
@@ -189,7 +188,10 @@ namespace MemeBox.ViewModels
             var sound = Sounds.SingleOrDefault(x => x.Name == soundName);
             if (sound.HotKey.Key != Key.None)
             {
-                if (MessageBox.Show("Do you truly wish to clear this sound's bound key ?", "Remove Bind", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"Do you truly wish to clear {soundName}'s bound key ?",
+                    "Clear Keybind",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
                 }
@@ -201,7 +203,7 @@ namespace MemeBox.ViewModels
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new();
             openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            if (openFileDialog.ShowDialog() != MessageBoxResult.OK) return;
 
             var sound = new Sound { Name = openFileDialog.SafeFileName, Path = openFileDialog.FileName };
             sound.Name = sound.Name.Remove(sound.Name.LastIndexOf('.'));

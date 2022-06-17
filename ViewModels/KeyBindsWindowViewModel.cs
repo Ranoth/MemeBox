@@ -3,7 +3,6 @@ using GlobalKeyboardHooker;
 using MemeBox.Models;
 using MemeBox.Stores;
 using MemeBox.Views;
-using System.Windows;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
 using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
@@ -62,8 +61,10 @@ namespace MemeBox.ViewModels
                 soundToUpdate.HotKey = KeyToBind;
                 view.Close();
             }
-            else if (MessageBox.Show("This key has already been bound, clear old KeyBind to assign it to the new sound ?", "Replace Bind", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
-                    MessageBoxResult.Yes)
+            else if (MessageBox.Show($"This key has already been bound, clear old keybind from {sound.Name} to assign it to {soundToUpdate.Name} ?",
+                     "Reassign Keybind",
+                     MessageBoxButton.YesNo,
+                     MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
 
                 sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
@@ -77,7 +78,10 @@ namespace MemeBox.ViewModels
         {
             if (soundToUpdate.HotKey.Key != Key.None)
             {
-                if (MessageBox.Show("Do you truly wish to clear this sound's bound key ?", "Clear Bind", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"Do you truly wish to clear {soundToUpdate.Name}'s bound key ?",
+                    "Clear Keybind",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     soundToUpdate.HotKey = new HotKey(Key.None, ModifierKeys.None);
                     view.Close();
