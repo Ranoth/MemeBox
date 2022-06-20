@@ -8,6 +8,7 @@ using MessageBox = System.Windows.Forms.MessageBox;
 using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
+using WPFUtilsBox.GlobalKeyboardHooker;
 
 namespace MemeBox.ViewModels
 {
@@ -27,26 +28,8 @@ namespace MemeBox.ViewModels
 
         public void OnKeyUp(object sender, KeyEventArgs e)
         {
-            var key = e.Key; var mod = Keyboard.Modifiers;
-            if (key == Key.System)
-                key = e.SystemKey;
-
-            if (key == Key.LeftCtrl ||
-                key == Key.LeftAlt ||
-                key == Key.RightCtrl ||
-                key == Key.RightAlt ||
-                key == Key.LeftShift ||
-                key == Key.RightShift ||
-                key == Key.LWin ||
-                key == Key.RWin ||
-                key == Key.Clear ||
-                key == Key.OemClear ||
-                key == Key.Apps)
-            {
-                return;
-            }
-
-            KeyToBind = new HotKey(key, mod);
+            var key = KeyBinder.GatherHotKey(e);
+            if (key != null) KeyToBind = key;
             SetBind();
         }
         public void SetBind()
