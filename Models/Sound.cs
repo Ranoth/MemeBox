@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using GlobalKeyboardHooker;
 using System.Windows.Input;
+using WPFUtilsBox.GlobalKeyboardHooker;
+using WPFUtilsBox.HotKeyer;
 
 namespace MemeBox.Models
 {

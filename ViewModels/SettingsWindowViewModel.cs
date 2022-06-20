@@ -3,7 +3,7 @@ using NAudio.Wave;
 using System.ComponentModel;
 using System.Windows;
 using MemeBox.Stores;
-using EasyXml;
+using WPFUtilsBox.EasyXml;
 
 namespace MemeBox.ViewModels
 {

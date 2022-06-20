@@ -5,7 +5,8 @@ using MemeBox.Stores;
 using MemeBox.Views;
 using System.Windows.Forms;
 using System.Windows.Input;
-using GlobalKeyboardHooker;
+using WPFUtilsBox.GlobalKeyboardHooker;
+using WPFUtilsBox.HotKeyer;
 
 namespace MemeBox.ViewModels
 {

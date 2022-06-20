@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using GlobalKeyboardHooker;
 using MemeBox.Models;
 using MemeBox.Stores;
 using MemeBox.Views;
@@ -9,6 +8,7 @@ using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.GlobalKeyboardHooker;
+using WPFUtilsBox.HotKeyer;
 
 namespace MemeBox.ViewModels
 {

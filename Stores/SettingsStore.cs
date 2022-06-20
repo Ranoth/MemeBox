@@ -1,12 +1,13 @@
-﻿using EasyXml;
-using GlobalKeyboardHooker;
-using MemeBox.Models;
+﻿using MemeBox.Models;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
 using System.Xml.Linq;
+using WPFUtilsBox.EasyXml;
+using WPFUtilsBox.GlobalKeyboardHooker;
+using WPFUtilsBox.HotKeyer;
 
 namespace MemeBox.Stores
 {

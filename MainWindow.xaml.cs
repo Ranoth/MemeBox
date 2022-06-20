@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using GlobalKeyboardHooker;
 using MemeBox.ViewModels;
+using WPFUtilsBox.GlobalKeyboardHooker;
 
 namespace MemeBox
 {
