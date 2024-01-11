@@ -65,7 +65,6 @@
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Header="Set KeyBind"
-                                              Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                               Command="{Binding PlacementTarget.Tag.SetKeyBindCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                               CommandParameter="{Binding Name}"
                                               ContextMenuService.ShowOnDisabled="True">
@@ -74,7 +73,6 @@
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Header="Clear KeyBind"
-                                              Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                               Command="{Binding PlacementTarget.Tag.ClearKeyBindCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                               CommandParameter="{Binding Name}"
                                               ContextMenuService.ShowOnDisabled="True">

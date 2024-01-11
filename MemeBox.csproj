@@ -12,7 +12,6 @@
 		<Platforms>AnyCPU;x64;x86</Platforms>
 		<ApplicationIcon>Images\appIcon.ico</ApplicationIcon>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,6 +20,16 @@
 		<None Remove="Releases\**" />
 		<Page Remove="Releases\**" />
 	</ItemGroup>
+	
+	<Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
+		<!-- Work around https://github.com/dotnet/wpf/issues/6792 -->
+
+		<ItemGroup>
+			<FilteredAnalyzer Include="@(Analyzer->Distinct())" />
+			<Analyzer Remove="@(Analyzer)" />
+			<Analyzer Include="@(FilteredAnalyzer)" />
+		</ItemGroup>
+	</Target>
 
 	<ItemGroup>
 		<None Remove="deploy.bat" />

@@ -187,15 +187,13 @@ namespace MemeBox.ViewModels
         private void ClearKeyBind(string soundName)
         {
             var sound = Sounds.SingleOrDefault(x => x.Name == soundName);
-            if (sound.HotKey.Key != Key.None)
+            if (sound.HotKey.Key == Key.None) return;
+            if (MessageBox.Show($"Do you truly wish to clear {soundName}'s bound key ?",
+                "Clear Keybind",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                if (MessageBox.Show($"Do you truly wish to clear {soundName}'s bound key ?",
-                    "Clear Keybind",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
-                    sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
-                }
+                sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
             }
         }
 

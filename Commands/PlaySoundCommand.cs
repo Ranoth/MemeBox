@@ -1,4 +1,4 @@
-﻿using Commands;
+﻿using WPFUtilsBox.Commands;
 
 namespace MemeBox.Commands
 {

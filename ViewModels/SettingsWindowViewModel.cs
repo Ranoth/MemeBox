@@ -11,6 +11,15 @@ namespace MemeBox.ViewModels
     {
         private SettingsStore settingsStore;
         private Settings settings;
+        public Settings Settings
+        {
+            get => settings;
+            set
+            {
+                settings = value;
+                settingsStore.Settings = settings;
+            }
+        }
         private PlayersStore playersStore;
         private readonly MainWindowViewModel mainWindowViewModel;
 
@@ -28,8 +37,6 @@ namespace MemeBox.ViewModels
                 settings.SetOut = SelectedOut?.ProductName ?? "None";
 
                 StopPlayback();
-
-                UpdateSettingsStore();
             }
         }
         public WaveOutCapabilities? SelectedOutAux
@@ -41,8 +48,6 @@ namespace MemeBox.ViewModels
                 settings.SetOutAux = SelectedOutAux?.ProductName ?? "None";
 
                 StopPlayback();
-
-                UpdateSettingsStore();
             }
         }
         public float Volume
@@ -52,8 +57,6 @@ namespace MemeBox.ViewModels
             {
                 SetProperty(ref volume, value);
                 settings.Volume = Volume;
-
-                UpdateSettingsStore();
             }
         }
 
@@ -82,7 +85,6 @@ namespace MemeBox.ViewModels
         {
             try
             {
-                UpdateSettingsStore();
                 XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
             }
             catch (Exception ex)
@@ -91,11 +93,6 @@ namespace MemeBox.ViewModels
             }
 
             mainWindowViewModel.SettingsWindow = null;
-        }
-
-        private void UpdateSettingsStore()
-        {
-            settingsStore.Settings = settings;
         }
 
         private void StopPlayback()

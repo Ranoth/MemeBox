@@ -1,12 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemeBox.Commands;
+using MemeBox.Models;
 using MemeBox.Stores;
 using MemeBox.Views;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using WPFUtilsBox.GlobalKeyboardHooker;
 using WPFUtilsBox.HotKeyer;
+using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
+using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
+using MessageBoxResult = System.Windows.Forms.DialogResult;
+using WPFUtilsBox.EasyXml;
+using System.Runtime.CompilerServices;
 
 namespace MemeBox.ViewModels
 {
@@ -15,12 +23,17 @@ namespace MemeBox.ViewModels
         private readonly NavigationStore navigationStore = new();
         private readonly SettingsStore settingsStore = new();
         private readonly PlayersStore playersStore;
+        [ObservableProperty]
+        private string stopButtonName;
+
+        private bool keyBindChanging = false;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(OpenSettingsWindowCommand))]
         private SettingsWindow settingsWindow;
         [ObservableProperty]
         private ViewModelBase currentViewModel;
+
         public NavigateCommand? ToSoundBoardCommand { get; private set; }
         public NavigateCommand? ToUserControl1Command { get; private set; }
 
@@ -32,7 +45,31 @@ namespace MemeBox.ViewModels
 
             navigationStore.CurrentViewModel = new SoundBoardViewModel(settingsStore, playersStore);
 
+            SetStopButton();
+
+            settingsStore.Settings.HotKeyChanged += () =>
+            {
+                SetStopButton();
+            };
+
             InitCommands();
+        }
+
+        private void SetStopButton()
+        {
+            if (settingsStore.Settings.HotKey.Key == Key.None) StopButtonName = "Stop Playback";
+            else StopButtonName = "Stop Playback -> " + settingsStore.Settings.HotKey.Key;
+
+            try
+            {
+                XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error : " + ex.ToString());
+            }
+
+
         }
 
         private void InitCommands()
@@ -111,6 +148,12 @@ namespace MemeBox.ViewModels
                         {
                             if ((crvm as SoundBoardViewModel).CanPlaySound(sound.Name)) (crvm as SoundBoardViewModel).PlaySound(sound.Name);
                         }
+                        else if (sound == null && key.Key == settingsStore.Settings.HotKey.Key
+                            && key.Modifiers == settingsStore.Settings.HotKey.Modifiers
+                            && !(crvm as SoundBoardViewModel).KeyBindChanging)
+                        {
+                            StopPlayback();
+                        }
                     }
                 }
                 catch (InvalidOperationException)
@@ -118,6 +161,29 @@ namespace MemeBox.ViewModels
                     MessageBox.Show("Cannot use duplicate keybinds");
                     settingsStore.UserSounds.LastOrDefault(x => x.HotKey == key).HotKey = new HotKey(Key.None, ModifierKeys.None);
                 }
+            }
+        }
+
+        [RelayCommand]
+        private void SetKeyBind()
+        {
+            keyBindChanging = true;
+            var keyBindDialog = new KeysBindsWindow(settingsStore, true);
+            keyBindDialog.ShowDialog();
+            keyBindChanging = false;
+        }
+
+        [RelayCommand]
+        private void ClearKeyBind()
+        {
+            if (settingsStore.Settings.HotKey.Key == Key.None) return;
+
+            if (MessageBox.Show($"Do you truly wish to clear the stop button's bound key ?",
+                               "Clear Keybind",
+                                              MessageBoxButton.YesNo,
+                                                             MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
             }
         }
     }
