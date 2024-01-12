@@ -14,14 +14,14 @@ namespace MemeBox.Views
         public KeysBindsWindow(SettingsStore settingsStore, Sound soundToUpdate)
         {
             InitializeComponent();
-            viewModel = new KeyBindsWindowViewModel(settingsStore, soundToUpdate, this);
+            viewModel = new KeyBindsWindowViewModel(settingsStore, this, soundToUpdate);
             DataContext = viewModel;
             KeyUp += viewModel.OnKeyUp;
         }
         public KeysBindsWindow(SettingsStore settingsStore, bool isStopButton)
         {
             InitializeComponent();
-            viewModel = new KeyBindsWindowViewModel(settingsStore, isStopButton, this);
+            viewModel = new KeyBindsWindowViewModel(settingsStore, this, isStopButton);
             DataContext = viewModel;
             KeyUp += viewModel.OnKeyUp;
         }

@@ -9,29 +9,31 @@ using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.HotKeyer;
 using WPFUtilsBox.EasyXml;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MemeBox.ViewModels
 {
     public partial class KeyBindsWindowViewModel : ViewModelBase
     {
+        [ObservableProperty]
         private SettingsStore settingsStore;
         private Sound soundToUpdate;
         private KeysBindsWindow view;
         private bool isStopButton;
 
         public HotKey? KeyToBind { get; set; }
-        public KeyBindsWindowViewModel(SettingsStore settingsStore, Sound soundToUpdate, KeysBindsWindow view)
-        {
-            this.settingsStore = settingsStore;
-            this.soundToUpdate = soundToUpdate;
-            this.view = view;
-        }
 
-        public KeyBindsWindowViewModel(SettingsStore settingsStore, bool isStopButton, KeysBindsWindow view)
+        public KeyBindsWindowViewModel(SettingsStore settingsStore, KeysBindsWindow view, Sound soundToUpdate)
         {
             this.settingsStore = settingsStore;
-            this.isStopButton = isStopButton;
             this.view = view;
+            this.soundToUpdate = soundToUpdate;
+        }
+        public KeyBindsWindowViewModel(SettingsStore settingsStore, KeysBindsWindow view, bool isStopButton)
+        {
+            this.settingsStore = settingsStore;
+            this.view = view;
+            this.isStopButton = isStopButton;
         }
         public void OnKeyUp(object sender, KeyEventArgs e)
         {
@@ -63,7 +65,6 @@ namespace MemeBox.ViewModels
                      MessageBoxButton.YesNo,
                      MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-
                 sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
                 soundToUpdate.HotKey = KeyToBind;
                 view.Close();
