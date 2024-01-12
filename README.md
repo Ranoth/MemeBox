@@ -1,6 +1,6 @@
 # MemeBox
 
-[Download MemeBox](https://getmemebox.ranoth.com/build/publish.zip)
+[Download MemeBox](https://getmemebox.ranoth.com/build/MemeBox.zip)
 
 MemeBox is a simple soundboard.
 
