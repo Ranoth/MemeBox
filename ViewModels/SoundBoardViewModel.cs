@@ -13,7 +13,6 @@ using MessageBox = System.Windows.Forms.MessageBox;
 using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
-using WPFUtilsBox.GlobalKeyboardHooker;
 using WPFUtilsBox.HotKeyer;
 
 namespace MemeBox.ViewModels

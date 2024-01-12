@@ -1,11 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemeBox.Commands;
-using MemeBox.Models;
 using MemeBox.Stores;
 using MemeBox.Views;
-using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using WPFUtilsBox.GlobalKeyboardHooker;
 using WPFUtilsBox.HotKeyer;
@@ -14,7 +11,7 @@ using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.EasyXml;
-using System.Runtime.CompilerServices;
+using AutoUpdaterDotNET;
 
 namespace MemeBox.ViewModels
 {
@@ -39,6 +36,8 @@ namespace MemeBox.ViewModels
 
         public MainWindowViewModel()
         {
+            AutoUpdater.Start("https://getmemebox.ranoth.com/app.xml");
+
             navigationStore.CurrentViewModelChanged += () => CurrentViewModel = navigationStore.CurrentViewModel;
 
             playersStore = new PlayersStore(settingsStore);
@@ -68,8 +67,6 @@ namespace MemeBox.ViewModels
             {
                 MessageBox.Show("Error : " + ex.ToString());
             }
-
-
         }
 
         private void InitCommands()

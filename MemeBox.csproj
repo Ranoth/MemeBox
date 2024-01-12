@@ -12,6 +12,7 @@
 		<Platforms>AnyCPU;x64;x86</Platforms>
 		<ApplicationIcon>Images\appIcon.ico</ApplicationIcon>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<AssemblyVersion>1.0.0.1</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -25,7 +26,7 @@
 		<!-- Work around https://github.com/dotnet/wpf/issues/6792 -->
 
 		<ItemGroup>
-			<FilteredAnalyzer Include="@(Analyzer->Distinct())" />
+			<FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
 			<Analyzer Remove="@(Analyzer)" />
 			<Analyzer Include="@(FilteredAnalyzer)" />
 		</ItemGroup>
@@ -60,6 +61,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Autoupdater.NET.Official" Version="1.8.4" />
 	  <PackageReference Include="CommunityToolkit.Common" Version="8.0.0-preview4" />
 	  <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0-preview4" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview4" />
