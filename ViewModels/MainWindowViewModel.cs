@@ -46,10 +46,7 @@ namespace MemeBox.ViewModels
 
             SetStopButton();
 
-            settingsStore.Settings.HotKeyChanged += () =>
-            {
-                SetStopButton();
-            };
+            settingsStore.Settings.HotKeyChanged += () => SetStopButton();
 
             InitCommands();
         }
@@ -176,9 +173,9 @@ namespace MemeBox.ViewModels
             if (settingsStore.Settings.HotKey.Key == Key.None) return;
 
             if (MessageBox.Show($"Do you truly wish to clear the stop button's bound key ?",
-                               "Clear Keybind",
-                                              MessageBoxButton.YesNo,
-                                                             MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                                "Clear Keybind",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
             }
