@@ -14,7 +14,7 @@ namespace MemeBox.Stores
 
             UpdatePlayersSettings();
 
-            this.settingsStore.SettingsChanged += () => UpdatePlayersSettings();
+            this.settingsStore.Settings.PropertyChanged += (s, e) => UpdatePlayersSettings();
         }
 
         private void UpdatePlayersSettings()

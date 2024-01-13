@@ -54,6 +54,11 @@ namespace MemeBox.ViewModels
 
         private void SearchSounds(string target)
         {
+            if (target == null || target == string.Empty)
+            {
+                DisplayedSounds = new BindingList<Sound>(Sounds);
+                return;
+            }
             DisplayedSounds = new BindingList<Sound>(Sounds.Where(x => x.Name.ToLower().Contains(target.ToLower())).ToList());
         }
 

@@ -24,7 +24,7 @@ namespace MemeBox.Stores
             set
             {
                 settings = value;
-                SettingsChanged?.Invoke();
+                //SettingsChanged?.Invoke();
             }
         }
 
