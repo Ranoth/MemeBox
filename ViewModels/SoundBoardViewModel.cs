@@ -14,6 +14,7 @@ using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.HotKeyer;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MemeBox.ViewModels
 {
@@ -22,32 +23,47 @@ namespace MemeBox.ViewModels
         private SettingsStore settingsStore;
         private PlayersStore playersStore;
         private Sound removedSound;
+        private string searchText;
+        [ObservableProperty]
+        private BindingList<Sound> displayedSounds;
 
         public bool KeyBindChanging { get; set; } = false;
         public PlaySoundCommand PlaySoundCommand { get; set; }
         public BindingList<Sound> Sounds { get; private set; } = new();
-
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                SetProperty(ref searchText, value);
+                SearchSounds(SearchText);
+            }
+        }
         public SoundBoardViewModel(SettingsStore settingsStore, PlayersStore playersStore)
         {
             this.settingsStore = settingsStore;
             this.playersStore = playersStore;
-            UpdateSoundsList();
             RegisterMessengers();
 
+            Sounds = settingsStore.UserSounds;
+            DisplayedSounds = new(Sounds);
+
             PlaySoundCommand = new PlaySoundCommand(PlaySound, CanPlaySound);
+        }
+
+        private void SearchSounds(string target)
+        {
+            DisplayedSounds = new BindingList<Sound>(Sounds.Where(x => x.Name.ToLower().Contains(target.ToLower())).ToList());
         }
 
         private void RegisterMessengers()
         {
             settingsStore.UserSounds.ListChanged += (s, e) =>
             {
-                UpdateSoundsList();
                 UpdateUserSoundsXml(s, e);
+                SearchSounds(SearchText);
             };
-        }
-        private void UpdateSoundsList()
-        {
-            Sounds = settingsStore.UserSounds;
         }
 
         public void PlaySound(object soundName)
@@ -166,10 +182,8 @@ namespace MemeBox.ViewModels
         }
         private void RemoveSound(string soundName)
         {
-            Sound sound = Sounds.LastOrDefault(x => x.Name == soundName);
-
-            removedSound = sound;
-            settingsStore.UserSounds.Remove(sound);
+            removedSound = Sounds.LastOrDefault(x => x.Name == soundName);
+            Sounds.Remove(removedSound);
             removedSound = null;
         }
 
@@ -206,7 +220,7 @@ namespace MemeBox.ViewModels
             var sound = new Sound { Name = openFileDialog.SafeFileName, Path = openFileDialog.FileName };
             sound.Name = sound.Name.Remove(sound.Name.LastIndexOf('.'));
 
-            settingsStore.UserSounds.Add(sound);
+            Sounds.Add(sound);
         }
     }
 }

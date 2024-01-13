@@ -40,6 +40,7 @@
 		<None Remove="Images\playIcon.png" />
 		<None Remove="Images\plusButtonIcon.png" />
 		<None Remove="Images\removeIcon.png" />
+		<None Remove="Images\searchIcon.png" />
 		<None Remove="Images\settingsButtonIcon.png" />
 		<None Remove="Images\stopPlaybackIcon.png" />
 		<None Remove="MemeBox.1.0.0.nupkg" />
@@ -92,6 +93,9 @@
 		</Resource>
 		<Resource Include="Images\removeIcon.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\searchIcon.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Images\settingsButtonIcon.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
