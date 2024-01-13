@@ -21,7 +21,7 @@ namespace MemeBox.ViewModels
         private KeysBindsWindow view;
         private bool isStopButton;
 
-        public HotKey? KeyToBind { get; set; }
+        public HotKey? KeyToBind { get; set; } = new HotKey(Key.None, ModifierKeys.None);
 
         public KeyBindsWindowViewModel(SettingsStore settingsStore, KeysBindsWindow view, Sound soundToUpdate)
         {
@@ -44,6 +44,12 @@ namespace MemeBox.ViewModels
         }
         public void SetBind()
         {
+            if (KeyToBind.Key == Key.None)
+            {
+                MessageBox.Show("Please choose a key along with the modifier");
+                return;
+            }
+
             var sound = settingsStore.UserSounds.SingleOrDefault(x =>
             {
                 if (x.HotKey.Key == KeyToBind.Key && x.HotKey.Modifiers == KeyToBind.Modifiers) return true;
@@ -73,17 +79,26 @@ namespace MemeBox.ViewModels
 
         public void SetBindStopButton()
         {
+            if (KeyToBind.Key == Key.None)
+            {
+                MessageBox.Show("Please choose a key along with the modifier");
+                return;
+            }
+
             var sound = settingsStore.UserSounds.SingleOrDefault(x =>
             {
                 if (x.HotKey.Key == KeyToBind.Key && x.HotKey.Modifiers == KeyToBind.Modifiers) return true;
                 else return false;
             });
+
             if (sound != null)
             {
                 MessageBox.Show($"This key has already been bound to {sound.Name}, please choose another key");
                 return;
             }
+
             settingsStore.Settings.HotKey = KeyToBind;
+
             try
             {
                 XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);

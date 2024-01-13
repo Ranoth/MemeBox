@@ -53,17 +53,8 @@ namespace MemeBox.ViewModels
 
         private void SetStopButton()
         {
-            if (settingsStore.Settings.HotKey.Key == Key.None) StopButtonName = "Stop Playback";
-            else StopButtonName = "Stop Playback -> " + settingsStore.Settings.HotKey.Key;
-
-            try
-            {
-                XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error : " + ex.ToString());
-            }
+            if ((settingsStore.Settings.HotKey?.Key ?? Key.None) == Key.None) StopButtonName = "Stop Playback";
+            else StopButtonName = "Stop Playback -> " + settingsStore.Settings.HotKey;
         }
 
         private void InitCommands()
