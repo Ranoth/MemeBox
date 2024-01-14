@@ -31,13 +31,24 @@ namespace MemeBox.Models
             }
         }
 
-        private float volume = 0.5f;
-        public float Volume
+        private float volumeMain = 0.5f;
+        public float VolumeMain
         {
-            get => volume;
+            get => volumeMain;
             set
             {
-                volume = value;
+                volumeMain = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private float volumeAux = 0.5f;
+        public float VolumeAux
+        {
+            get => volumeAux;
+            set
+            {
+                volumeAux = value;
                 OnPropertyChanged();
             }
         }

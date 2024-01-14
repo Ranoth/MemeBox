@@ -26,7 +26,8 @@ namespace MemeBox.ViewModels
         public List<WaveOutCapabilities> AudioOutDevicesList => settingsStore.AudioOutCapabilities;
         private WaveOutCapabilities? selectedOut = new();
         private WaveOutCapabilities? selectedOutAux = new();
-        private float volume = 1;
+        private float volumeMain = 1;
+        private float volumeAux = 1;
 
         public WaveOutCapabilities? SelectedOut
         {
@@ -50,13 +51,23 @@ namespace MemeBox.ViewModels
                 StopPlayback();
             }
         }
-        public float Volume
+
+        public float VolumeMain
         {
-            get => volume;
+            get => volumeMain;
             set
             {
-                SetProperty(ref volume, value);
-                settings.Volume = Volume;
+                SetProperty(ref volumeMain, value);
+                settings.VolumeMain = volumeMain;
+            }
+        }
+        public float VolumeAux
+        {
+            get => volumeAux;
+            set
+            {
+                SetProperty(ref volumeAux, value);
+                settings.VolumeAux = volumeAux;
             }
         }
 
@@ -77,8 +88,8 @@ namespace MemeBox.ViewModels
                 return this.settings.SetOutAux?.Contains(x.ProductName) ?? false && this.settings.SetOutAux != "None";
             });
 
-            volume = this.settings.Volume;
-
+            volumeMain = settings.VolumeMain;
+            volumeAux = settings.VolumeAux;
         }
 
         public void OnWindowClosing(object sender, CancelEventArgs e)

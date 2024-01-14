@@ -13,6 +13,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -27,8 +28,10 @@
         <ComboBox Grid.Column="1" Grid.Row="1" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   ItemsSource="{Binding AudioOutDevicesList}" DisplayMemberPath="ProductName" SelectedValue="{Binding SelectedOutAux}"/>
 
-        <Label Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Left" VerticalAlignment="Center">Volume :</Label>
-        <Slider Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding Volume}" Maximum="1" Minimum="0" IsSnapToTickEnabled="False"/>
+        <Label Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Left" VerticalAlignment="Center">Volume Main :</Label>
+        <Slider Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding VolumeMain}" Maximum="1" Minimum="0" IsSnapToTickEnabled="False"/>
+        <Label Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Left" VerticalAlignment="Center">Volume Aux :</Label>
+        <Slider Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding VolumeAux}" Maximum="1" Minimum="0" IsSnapToTickEnabled="False"/>
 
     </Grid>
 </Window>
