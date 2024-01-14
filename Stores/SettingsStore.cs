@@ -24,13 +24,10 @@ namespace MemeBox.Stores
             set
             {
                 settings = value;
-                //SettingsChanged?.Invoke();
             }
         }
 
         public BindingList<Sound> UserSounds { get; set; } = new();
-
-        public event Action? SettingsChanged;
         public SettingsStore()
         {
             ReadXmlSounds();

@@ -51,6 +51,7 @@ namespace MemeBox.ViewModels
 
             settingsStore.Settings.HotKeyChanged += () => SetStopButton();
             settingsStore.UserSounds.ListChanged += (s, e) => UnbindAllButtonsCommand.NotifyCanExecuteChanged();
+            settingsStore.Settings.HotKeyChanged += () => UnbindAllButtonsCommand.NotifyCanExecuteChanged();
 
             InitCommands();
         }
@@ -152,6 +153,15 @@ namespace MemeBox.ViewModels
             {
                 foreach (var sound in settingsStore.UserSounds) sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
                 settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
+                try
+                {
+                    XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error : " + ex.ToString());
+                }
+                UnbindAllButtonsCommand.NotifyCanExecuteChanged();
             }
         }
         private bool CanExecuteUnbindAllButtons()

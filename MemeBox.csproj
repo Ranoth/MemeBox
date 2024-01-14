@@ -12,7 +12,7 @@
 		<Platforms>AnyCPU;x64;x86</Platforms>
 		<ApplicationIcon>Images\appIcon.ico</ApplicationIcon>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<AssemblyVersion>1.0.3.0</AssemblyVersion>
+		<AssemblyVersion>1.0.3.1</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
