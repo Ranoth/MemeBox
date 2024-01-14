@@ -12,6 +12,9 @@ using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.EasyXml;
 using AutoUpdaterDotNET;
+using System.Collections.Specialized;
+using MemeBox.Models;
+using System.ComponentModel;
 
 namespace MemeBox.ViewModels
 {
@@ -47,6 +50,7 @@ namespace MemeBox.ViewModels
             SetStopButton();
 
             settingsStore.Settings.HotKeyChanged += () => SetStopButton();
+            settingsStore.UserSounds.ListChanged += (s, e) => UnbindAllButtonsCommand.NotifyCanExecuteChanged();
 
             InitCommands();
         }
@@ -63,18 +67,6 @@ namespace MemeBox.ViewModels
             ToUserControl1Command = new NavigateCommand(() => new UserControl1ViewModel(), navigationStore);
         }
 
-        //private T ManageModels<T>() where T : ViewModelBase, new()
-        //{
-        //    var finder = navigationStore.ViewModelsSaved.Find(x => x.GetType() == typeof(T));
-        //    if (finder != null) return (T)finder;
-        //    else
-        //    {
-        //        var tempT = (T)Activator.CreateInstance(typeof(T), settingsStore, navigationStore, playersStore);
-        //        navigationStore.ViewModelsSaved.Add(tempT);
-        //        return tempT;
-        //    }
-        //}
-
         [RelayCommand(CanExecute = nameof(CanOpenSettingsWindow))]
         private void OpenSettingsWindow()
         {
@@ -90,28 +82,6 @@ namespace MemeBox.ViewModels
             playersStore.MainPlayer.Pause();
             playersStore.AuxPlayer.Pause();
         }
-
-        //public void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        //{
-        //    try
-        //    {
-        //        var crvm = navigationStore.CurrentViewModel;
-        //        if (crvm.GetType() == typeof(SoundBoardViewModel))
-        //        {
-        //            var sound = settingsStore.UserSounds.SingleOrDefault(x => x.KeyBind == e.Key);
-
-        //            if (sound != null)
-        //            {
-        //                if ((crvm as SoundBoardViewModel).CanPlaySound(sound.Name)) (crvm as SoundBoardViewModel).PlaySound(sound.Name);
-        //            }
-        //        }
-        //    }
-        //    catch (InvalidOperationException)
-        //    {
-        //        MessageBox.Show("Cannot use duplicate keybinds");
-        //        settingsStore.UserSounds.LastOrDefault(x => x.KeyBind == e.Key).KeyBind = Key.None;
-        //    }
-        //}
         public void OnKeyDownGlobal(object sender, GlobalKeyboardHookEventArgs e)
         {
             if (!e.KeyboardState.HasFlag(GlobalKeyboardHook.KeyboardState.KeyUp))
@@ -170,6 +140,24 @@ namespace MemeBox.ViewModels
             {
                 settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
             }
+        }
+
+        [RelayCommand(CanExecute = nameof(CanExecuteUnbindAllButtons))]
+        private void UnbindAllButtons()
+        {
+            if (MessageBox.Show($"Do you truly wish to unbind all buttons ?",
+                                "Unbind All Buttons",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                foreach (var sound in settingsStore.UserSounds) sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
+                settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
+            }
+        }
+        private bool CanExecuteUnbindAllButtons()
+        {
+            if (settingsStore.Settings.HotKey.Key == Key.None && settingsStore.UserSounds.All(x => x.HotKey.Key == Key.None)) return false;
+            return true;
         }
     }
 }
