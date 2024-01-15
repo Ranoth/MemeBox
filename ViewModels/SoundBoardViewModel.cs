@@ -135,45 +135,60 @@ namespace MemeBox.ViewModels
             var changeType = e.ListChangedType;
             var xDoc = XDocument.Load(settingsStore.UserSoundsFilePath);
 
-            if (changeType == ListChangedType.ItemChanged)
+            switch (changeType)
             {
-                var sound = list[e.NewIndex];
-                var xQuery = from elements in xDoc.Descendants("UserSounds").Elements("UserSound")
-                             where elements.Attribute(nameof(sound.Name)).Value == sound.Name
-                             select elements;
+                case ListChangedType.ItemChanged:
+                    {
+                        var sound = list[e.NewIndex];
+                        var xQuery = from elements in xDoc.Descendants("UserSounds").Elements("UserSound")
+                                     where elements.Attribute(nameof(sound.Name)).Value == sound.Name
+                                     select elements;
 
-                foreach (var element in xQuery)
-                {
-                    element.SetAttributeValue(nameof(sound.Name), sound.Name);
-                    element.SetAttributeValue(nameof(sound.Path), sound.Path);
-                    element.Element(nameof(sound.HotKey))
-                           .SetAttributeValue(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString());
-                    element.Element(nameof(sound.HotKey))
-                           .SetAttributeValue(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString());
-                }
+                        foreach (var element in xQuery)
+                        {
+                            element.SetAttributeValue(nameof(sound.Name), sound.Name);
+                            element.SetAttributeValue(nameof(sound.Path), sound.Path);
+                            element.Element(nameof(sound.HotKey))
+                                    .SetAttributeValue(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString());
+                            element.Element(nameof(sound.HotKey))
+                                    .SetAttributeValue(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString());
+                        }
 
-                xDoc.Save(settingsStore.UserSoundsFilePath);
-            }
-            else if (changeType == ListChangedType.ItemDeleted)
-            {
-                Sound _;
-                xDoc.Descendants("UserSounds").Elements("UserSound")
-                    .FirstOrDefault(x => x.Attribute(nameof(_.Name)).Value == removedSound.Name).Remove();
+                        xDoc.Save(settingsStore.UserSoundsFilePath);
+                        break;
+                    }
 
-                xDoc.Save(settingsStore.UserSoundsFilePath);
-            }
-            else if (changeType == ListChangedType.ItemAdded)
-            {
-                var sound = list[e.NewIndex];
-                xDoc.Element("UserSounds").Add(
-                    new XElement("UserSound",
-                        new XAttribute(nameof(sound.Name), sound.Name),
-                        new XAttribute(nameof(sound.Path), sound.Path),
-                            new XElement(nameof(sound.HotKey),
-                                new XAttribute(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString()),
-                                new XAttribute(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString()))));
+                case ListChangedType.ItemDeleted:
+                    {
+                        Sound _;
+                        xDoc.Descendants("UserSounds").Elements("UserSound")
+                            .FirstOrDefault(x => x.Attribute(nameof(_.Name)).Value == removedSound.Name).Remove();
 
-                xDoc.Save(settingsStore.UserSoundsFilePath);
+                        xDoc.Save(settingsStore.UserSoundsFilePath);
+                        break;
+                    }
+
+                case ListChangedType.ItemAdded:
+                    {
+                        var sound = list[e.NewIndex];
+                        xDoc.Element("UserSounds").Add(
+                            new XElement("UserSound",
+                                new XAttribute(nameof(sound.Name), sound.Name),
+                                new XAttribute(nameof(sound.Path), sound.Path),
+                                    new XElement(nameof(sound.HotKey),
+                                        new XAttribute(nameof(sound.HotKey.Key), sound.HotKey.Key.ToString()),
+                                        new XAttribute(nameof(sound.HotKey.Modifiers), sound.HotKey.Modifiers.ToString()))));
+
+                        xDoc.Save(settingsStore.UserSoundsFilePath);
+                        break;
+                    }
+                case ListChangedType.Reset:
+                    {
+                        xDoc.Element("UserSounds").Remove();
+                        xDoc.Add(new XElement("UserSounds"));
+                        xDoc.Save(settingsStore.UserSoundsFilePath);
+                        break;
+                    }
             }
         }
 
