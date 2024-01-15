@@ -50,7 +50,11 @@ namespace MemeBox.ViewModels
             SetStopButton();
 
             settingsStore.Settings.HotKeyChanged += () => SetStopButton();
-            settingsStore.UserSounds.ListChanged += (s, e) => UnbindAllButtonsCommand.NotifyCanExecuteChanged();
+            settingsStore.UserSounds.ListChanged += (s, e) =>
+            {
+                UnbindAllButtonsCommand.NotifyCanExecuteChanged();
+                RemoveAllSoundsCommand.NotifyCanExecuteChanged();
+            };
             settingsStore.Settings.HotKeyChanged += () => UnbindAllButtonsCommand.NotifyCanExecuteChanged();
 
             InitCommands();
@@ -167,6 +171,25 @@ namespace MemeBox.ViewModels
         private bool CanExecuteUnbindAllButtons()
         {
             if (settingsStore.Settings.HotKey.Key == Key.None && settingsStore.UserSounds.All(x => x.HotKey.Key == Key.None)) return false;
+            return true;
+        }
+
+        [RelayCommand(CanExecute = nameof(CanExecuteRemoveAllSounds))]
+        private void RemoveAllSounds()
+        {
+            if (MessageBox.Show($"Do you truly wish to remove all sounds ?",
+                                               "Remove All Sounds",
+                                               MessageBoxButton.YesNo,
+                                               MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                settingsStore.UserSounds.Clear();
+                RemoveAllSoundsCommand.NotifyCanExecuteChanged();
+            }
+        }
+
+        private bool CanExecuteRemoveAllSounds()
+        {
+            if (settingsStore.UserSounds.Count == 0) return false;
             return true;
         }
     }
