@@ -29,12 +29,12 @@ jobs:
         run: |
           powershell Compress-Archive -Path bin/MemeBox/* -DestinationPath MemeBox.zip
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: memebox-artifact
           path: MemeBox.zip
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: app-artifact
           path: app.xml
