@@ -38,7 +38,7 @@ jobs:
             key: ${{ secrets.KEY }}
             port: ${{ secrets.PORT }}
             source: "MemeBox.zip"
-            target: "${{ secrets.TARGET}}/download"
+            target: "${{ secrets.PATH_TO_PROJECT}}/download"
             
       - name: scp app.xml to server
         uses: appleboy/scp-action@master
@@ -48,4 +48,4 @@ jobs:
             key: ${{ secrets.KEY }}
             port: ${{ secrets.PORT }}
             source: "app.xml"
-            target: "${{ secrets.TARGET}}"
+            target: "${{ secrets.PATH_TO_PROJECT}}"
