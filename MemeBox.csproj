@@ -71,9 +71,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="WPFUtilsBox">
-		  <HintPath>..\WPFUtilsBox\bin\Release\net6.0-windows\WPFUtilsBox.dll</HintPath>
-		</Reference>
+	  <Reference Include="WPFUtilsBox">
+	    <HintPath>WPFUtilsBox.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<ItemGroup>

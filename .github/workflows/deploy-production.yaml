@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.x.x
-      - run: dotnet build MemeBox.csproj --configuration Release
+      - run: dotnet publish -p:PublishProfile=FolderProfile
 
       - name: Install zip and zip the build
         run: |
