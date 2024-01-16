@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,9 +27,7 @@ jobs:
 
       - name: compress the build
         run: |
-          sudo apt-get install zip
-          cd bin/MemeBox
-          zip -r MemeBox.zip ./*
+          powershell Compress-Archive -Update -Path bin/MemeBox/* -DestinationPath bin/MemeBox.zip
 
       - name: scp zip to server
         uses: appleboy/scp-action@master
