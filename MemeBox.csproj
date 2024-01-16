@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<EnableWindowsTargeting Condition="'$(OS)' == 'Windows_NT'">true</EnableWindowsTargeting>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
 		<PackageIcon>appIcon.png</PackageIcon>
