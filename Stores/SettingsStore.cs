@@ -21,10 +21,7 @@ namespace MemeBox.Stores
         public Settings Settings
         {
             get => settings;
-            set
-            {
-                settings = value;
-            }
+            set => settings = value;
         }
 
         public BindingList<Sound> UserSounds { get; set; } = new();

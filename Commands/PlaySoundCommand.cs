@@ -13,14 +13,8 @@ namespace MemeBox.Commands
             base.canExecute = canExecute;
         }
 
-        public PlaySoundCommand(Action<object> execute) : this (execute, null)
-        {
+        public PlaySoundCommand(Action<object> execute) : this(execute, null) { }
 
-        }
-
-        public override void Execute(object? parameter)
-        {
-            execute.Invoke(parameter);
-        }
+        public override void Execute(object? parameter) => execute.Invoke(parameter);
     }
 }

@@ -14,9 +14,6 @@ namespace MemeBox.Commands
             this.navigationStore = navigationStore;
         }
 
-        public override void Execute(object? parameter)
-        {
-            navigationStore.CurrentViewModel = execute();
-        }
+        public override void Execute(object? parameter) => navigationStore.CurrentViewModel = execute();
     }
 }
