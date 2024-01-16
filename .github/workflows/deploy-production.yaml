@@ -28,7 +28,8 @@ jobs:
       - name: compress the build
         run: |
           sudo apt-get install zip
-          zip -r MemeBox.zip bin/MemeBox
+          cd bin/MemeBox
+          zip -r MemeBox.zip ./*
 
       - name: scp zip to server
         uses: appleboy/scp-action@master
