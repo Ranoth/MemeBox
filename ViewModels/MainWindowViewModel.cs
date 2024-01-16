@@ -40,7 +40,6 @@ namespace MemeBox.ViewModels
         public MainWindowViewModel()
         {
             AutoUpdater.Start("https://getmemebox.ranoth.com/app.xml");
-            AutoUpdater.InstalledVersion = new Version("1.0.4.3");
 
             navigationStore.CurrentViewModelChanged += () => CurrentViewModel = navigationStore.CurrentViewModel;
 
