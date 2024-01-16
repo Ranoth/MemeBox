@@ -28,7 +28,7 @@ jobs:
       - name: Install zip and zip the build
         run: |
           sudo apt-get install zip
-          zip -r MemeBox.zip bin/Release/net6.0/publish/*
+          zip -r MemeBox.zip bin/MemeBox/*
 
       - name: Deploy to production
         uses: appleboy/ssh-action@master
