@@ -1,0 +1,45 @@
+---
+name: Deploy To Production
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x.x
+      - run: dotnet build MemeBox.csproj --configuration Release
+
+      - name: Install zip and zip the build
+        run: |
+          sudo apt-get install zip
+          zip -r MemeBox.zip bin/Release/net6.0/publish/*
+
+      - name: Deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            rm -rf ${{ secrets.PATH_TO_PROJECT }}/download/MemeBox.zip
+            cp MemeBox.zip ${{ secrets.PATH_TO_PROJECT }}/download/MemeBox.zip
+
+            rm -rf ${{ secrets.PATH_TO_PROJECT }}/app.xml
+            cp app.xml ${{ secrets.PATH_TO_PROJECT }}/app.xml
