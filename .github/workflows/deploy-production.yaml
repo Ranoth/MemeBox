@@ -32,14 +32,15 @@ jobs:
       - name: Download Pscp
         run: |
           Invoke-WebRequest -Uri "https://the.earth.li/~sgtatham/putty/latest/w64/pscp.exe" -OutFile "pscp.exe"
+          echo ${{ secrets.KEY }} > key
         
       - name: Copy to zip server
         run: |
-          .\pscp.exe -i ${{ secrets.KEY }} -P ${{ secrets.PORT }} -r bin/MemeBox.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PATH_TO_PROJECT }}/download
+          .\pscp.exe -i key -P ${{ secrets.PORT }} -r bin/MemeBox.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PATH_TO_PROJECT }}/download
 
       - name: Copy app.xml to server
         run: |
-          .\pscp.exe -i ${{ secrets.KEY }} -P ${{ secrets.PORT }} -r app.xml ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PATH_TO_PROJECT }}
+          .\pscp.exe -i key -P ${{ secrets.PORT }} -r app.xml ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PATH_TO_PROJECT }}
 
       # - name: scp zip to server
       #   uses: appleboy/scp-action@master
