@@ -25,21 +25,27 @@ jobs:
           dotnet-version: 6.x.x
       - run: dotnet publish -p:PublishProfile=FolderProfile
 
-      - name: Install zip and zip the build
+      - name: compress the build
         run: |
           sudo apt-get install zip
           zip -r MemeBox.zip bin/MemeBox/*
 
-      - name: Deploy to production
-        uses: appleboy/ssh-action@master
+      - name: scp zip to server
+        uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            rm -rf ${{ secrets.PATH_TO_PROJECT }}/download/MemeBox.zip
-            cp MemeBox.zip ${{ secrets.PATH_TO_PROJECT }}/download/MemeBox.zip
-
-            rm -rf ${{ secrets.PATH_TO_PROJECT }}/app.xml
-            cp app.xml ${{ secrets.PATH_TO_PROJECT }}/app.xml
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.KEY }}
+            port: ${{ secrets.PORT }}
+            source: "MemeBox.zip"
+            target: "${{ secrets.TARGET}}/download"
+            
+      - name: scp app.xml to server
+        uses: appleboy/scp-action@master
+        with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.KEY }}
+            port: ${{ secrets.PORT }}
+            source: "app.xml"
+            target: "${{ secrets.TARGET}}"
