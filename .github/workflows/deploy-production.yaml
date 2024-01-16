@@ -32,7 +32,7 @@ jobs:
       - name: Download Pscp
         run: |
           Invoke-WebRequest -Uri "https://the.earth.li/~sgtatham/putty/latest/w64/pscp.exe" -OutFile "pscp.exe"
-          echo ${{ secrets.KEY }} > key
+          echo '${{ secrets.KEY }}' > key
         
       - name: Copy to zip server
         run: |
