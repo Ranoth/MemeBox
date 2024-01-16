@@ -29,28 +29,28 @@ jobs:
         run: |
           powershell Compress-Archive -Path bin/MemeBox/* -DestinationPath MemeBox.zip
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
-          name: MemeBox.zip
+          name: MemeBox-artifact
           path: MemeBox.zip
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
-          name: app.xml
+          name: app-artifact
           path: app.xml
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
-          name: MemeBox.zip
+          name: MemeBox-artifact
           path: MemeBox.zip
       
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
-          name: app.xml
+          name: app-artifact
           path: app.xml
 
       - name: scp zip to server
@@ -62,7 +62,6 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "MemeBox.zip"
           target: "${{ secrets.PATH_TO_PROJECT}}/download"
-          strip_components: 2
 
       - name: scp app.xml to server
         uses: appleboy/scp-action@master
