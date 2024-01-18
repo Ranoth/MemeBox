@@ -22,7 +22,7 @@ namespace MemeBox.ViewModels
     {
         private readonly NavigationStore navigationStore = new();
         private readonly SettingsStore settingsStore = new();
-        private readonly PlayersStore playersStore;
+        private PlayersStore playersStore;
         [ObservableProperty]
         private string stopButtonName;
 
@@ -76,7 +76,7 @@ namespace MemeBox.ViewModels
         private void OpenSettingsWindow()
         {
             SettingsWindow = new SettingsWindow(settingsStore, playersStore, this);
-            SettingsWindow.Show();
+            SettingsWindow.ShowDialog();
         }
 
         private bool CanOpenSettingsWindow() => SettingsWindow == null;

@@ -4,22 +4,13 @@ using System.ComponentModel;
 using System.Windows;
 using MemeBox.Stores;
 using WPFUtilsBox.EasyXml;
+using System.Windows.Threading;
 
 namespace MemeBox.ViewModels
 {
     public partial class SettingsWindowViewModel : ViewModelBase
     {
         private SettingsStore settingsStore;
-        private Settings settings;
-        public Settings Settings
-        {
-            get => settings;
-            set
-            {
-                settings = value;
-                settingsStore.Settings = settings;
-            }
-        }
         private PlayersStore playersStore;
         private readonly MainWindowViewModel mainWindowViewModel;
 
@@ -34,8 +25,9 @@ namespace MemeBox.ViewModels
             get => selectedOut;
             set
             {
+                if (SelectedOutAux?.ProductName == value?.ProductName) return;
                 SetProperty(ref selectedOut, value);
-                settings.SetOut = SelectedOut?.ProductName ?? "None";
+                settingsStore.Settings.SetOut = SelectedOut?.ProductName ?? "None";
 
                 StopPlayback();
             }
@@ -45,8 +37,9 @@ namespace MemeBox.ViewModels
             get => selectedOutAux;
             set
             {
+                if (SelectedOut?.ProductName == value?.ProductName) return;
                 SetProperty(ref selectedOutAux, value);
-                settings.SetOutAux = SelectedOutAux?.ProductName ?? "None";
+                settingsStore.Settings.SetOutAux = SelectedOutAux?.ProductName ?? "None";
 
                 StopPlayback();
             }
@@ -58,7 +51,7 @@ namespace MemeBox.ViewModels
             set
             {
                 SetProperty(ref volumeMain, value);
-                settings.VolumeMain = volumeMain;
+                settingsStore.Settings.VolumeMain = volumeMain;
             }
         }
         public float VolumeAux
@@ -67,29 +60,28 @@ namespace MemeBox.ViewModels
             set
             {
                 SetProperty(ref volumeAux, value);
-                settings.VolumeAux = volumeAux;
+                settingsStore.Settings.VolumeAux = volumeAux;
             }
         }
 
         public SettingsWindowViewModel(SettingsStore settingsStore, PlayersStore playersStore, MainWindowViewModel mainWindowViewModel)
         {
             this.settingsStore = settingsStore;
-            this.settings = this.settingsStore.Settings;
             this.playersStore = playersStore;
             this.mainWindowViewModel = mainWindowViewModel;
 
             selectedOut = AudioOutDevicesList.Find(x =>
             {
-                return this.settings.SetOut?.Contains(x.ProductName) ?? false && this.settings.SetOut != "None";
+                return this.settingsStore.Settings.SetOut?.Contains(x.ProductName) ?? false && this.settingsStore.Settings.SetOut != "None";
             });
 
             selectedOutAux = AudioOutDevicesList.Find(x =>
             {
-                return this.settings.SetOutAux?.Contains(x.ProductName) ?? false && this.settings.SetOutAux != "None";
+                return this.settingsStore.Settings.SetOutAux?.Contains(x.ProductName) ?? false && this.settingsStore.Settings.SetOutAux != "None";
             });
 
-            volumeMain = settings.VolumeMain;
-            volumeAux = settings.VolumeAux;
+            volumeMain = settingsStore.Settings.VolumeMain;
+            volumeAux = settingsStore.Settings.VolumeAux;
         }
 
         public void OnWindowClosing(object sender, CancelEventArgs e)

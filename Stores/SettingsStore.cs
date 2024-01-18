@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using WPFUtilsBox.EasyXml;
 using WPFUtilsBox.GlobalKeyboardHooker;
 using WPFUtilsBox.HotKeyer;
@@ -13,16 +14,10 @@ namespace MemeBox.Stores
 {
     public class SettingsStore
     {
-        private Settings settings = new();
+        public Settings Settings = new();
         public string SettingsFilePath { get; set; } = "settings.xml";
         public string UserSoundsFilePath { get; set; } = "UserSounds.xml";
         public List<WaveOutCapabilities> AudioOutCapabilities { get; set; } = new();
-
-        public Settings Settings
-        {
-            get => settings;
-            set => settings = value;
-        }
 
         public BindingList<Sound> UserSounds { get; set; } = new();
         public SettingsStore()
@@ -68,7 +63,7 @@ namespace MemeBox.Stores
             {
                 var enumerator = new MMDeviceEnumerator();
                 var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-                var waveOut = AudioOutCapabilities.Find(x => device.FriendlyName.Contains(x.ProductName));
+                var waveOut = AudioOutCapabilities.FirstOrDefault(x => device.FriendlyName.Contains(x.ProductName));
 
                 Settings = new Settings { SetOut = waveOut.ProductName };
                 XmlBroker.XmlDataWriter(Settings, SettingsFilePath);
