@@ -24,20 +24,22 @@ namespace MemeBox.Views
             if (sender is not System.Windows.Controls.ComboBox comboBox)
                 return;
 
-            if (comboBox.Name == "MainAudioOutComboBox" && AuxAudioOutComboBox.SelectedItem != null)
+            if (comboBox.Name == "MainAudioOutComboBox" && AuxAudioOutComboBox.SelectedItem != null && comboBox.SelectedItem != null)
             {
                 if (((WaveOutCapabilities)comboBox.SelectedItem).ProductName == ((WaveOutCapabilities)AuxAudioOutComboBox.SelectedItem).ProductName)
                 {
                     MessageBox.Show("You can't set the same device for both Main and Aux", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    comboBox.SelectedItem = e.RemovedItems[0];
+                    if (e.RemovedItems.Count > 0) comboBox.SelectedItem = e.RemovedItems[0];
+                    else comboBox.SelectedItem = null;
                 }
             }
-            else if (comboBox.Name == "AuxAudioOutComboBox" && MainAudioOutComboBox.SelectedItem != null)
+            else if (comboBox.Name == "AuxAudioOutComboBox" && MainAudioOutComboBox.SelectedItem != null && comboBox.SelectedItem != null)
             {
                 if (((WaveOutCapabilities)comboBox.SelectedItem).ProductName == ((WaveOutCapabilities)MainAudioOutComboBox.SelectedItem).ProductName)
                 {
                     MessageBox.Show("You can't set the same device for both Main and Aux", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    comboBox.SelectedItem = e.RemovedItems[0];
+                    if (e.RemovedItems.Count > 0) comboBox.SelectedItem = e.RemovedItems[0];
+                    else comboBox.SelectedItem = null;
                 }
             }
         }
