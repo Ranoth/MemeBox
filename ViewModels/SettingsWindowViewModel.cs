@@ -25,7 +25,7 @@ namespace MemeBox.ViewModels
             get => selectedOut;
             set
             {
-                if (SelectedOutAux?.ProductName == value?.ProductName) return;
+                if (SelectedOutAux?.ProductName == value?.ProductName || value?.ProductName == null) return;
                 SetProperty(ref selectedOut, value);
                 settingsStore.Settings.SetOut = SelectedOut?.ProductName ?? "None";
 
@@ -37,7 +37,7 @@ namespace MemeBox.ViewModels
             get => selectedOutAux;
             set
             {
-                if (SelectedOut?.ProductName == value?.ProductName) return;
+                if (SelectedOut?.ProductName == value?.ProductName || value?.ProductName == null) return;
                 SetProperty(ref selectedOutAux, value);
                 settingsStore.Settings.SetOutAux = SelectedOutAux?.ProductName ?? "None";
 
