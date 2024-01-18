@@ -2,6 +2,9 @@
 using MemeBox.ViewModels;
 using NAudio.Wave;
 using System.Windows;
+using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
+using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 
 namespace MemeBox.Views
 {
