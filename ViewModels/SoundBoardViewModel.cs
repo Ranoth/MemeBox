@@ -73,8 +73,6 @@ namespace MemeBox.ViewModels
                         var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName));
                         if (sound != null && sound.Progress != progress && progress < 100) sound.SetProgress(settingsStore, progress);
 
-                        foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
-
                         if (progress > 99 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing) sound.SetProgress(settingsStore, 0);
                     }
                     Thread.Sleep(50);
@@ -105,6 +103,7 @@ namespace MemeBox.ViewModels
         {
             var sound = Sounds.FirstOrDefault(x => x.Name == (string)soundName);
             playingSoundFileReader = new AudioFileReader(sound.Path);
+            foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
 
             try
             {
