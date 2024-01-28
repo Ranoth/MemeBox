@@ -15,6 +15,7 @@ using AutoUpdaterDotNET;
 using System.Collections.Specialized;
 using MemeBox.Models;
 using System.ComponentModel;
+using NAudio.Utils;
 
 namespace MemeBox.ViewModels
 {
@@ -59,7 +60,6 @@ namespace MemeBox.ViewModels
 
             InitCommands();
         }
-
         private void SetStopButton()
         {
             if ((settingsStore.Settings.HotKey?.Key ?? Key.None) == Key.None) StopButtonName = "Stop Playback";
@@ -86,6 +86,8 @@ namespace MemeBox.ViewModels
         {
             playersStore.MainPlayer.Pause();
             playersStore.AuxPlayer.Pause();
+            var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
+            if (sound != null) sound.Progress = 0;
         }
         public void OnKeyDownGlobal(object sender, GlobalKeyboardHookEventArgs e)
         {

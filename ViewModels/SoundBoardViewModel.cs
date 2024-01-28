@@ -15,6 +15,10 @@ using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.HotKeyer;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Diagnostics;
+using NAudio.Utils;
+using System.Windows.Threading;
+using System;
 
 namespace MemeBox.ViewModels
 {
@@ -24,6 +28,8 @@ namespace MemeBox.ViewModels
         private PlayersStore playersStore;
         private Sound removedSound;
         private string searchText;
+        private AudioFileReader playingSoundFileReader;
+
         [ObservableProperty]
         private BindingList<Sound> displayedSounds;
 
@@ -50,6 +56,35 @@ namespace MemeBox.ViewModels
             DisplayedSounds = new(Sounds);
 
             PlaySoundCommand = new PlaySoundCommand(PlaySound, CanPlaySound);
+
+            UpdateProgress();
+        }
+
+        private async void UpdateProgress()
+        {
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+                    Sounds.RaiseListChangedEvents = false;
+
+
+                    if (playingSoundFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
+                    {
+                        var progress = (int)(playersStore.MainPlayer?.GetPositionTimeSpan().TotalSeconds / playingSoundFileReader.TotalTime.TotalSeconds * 100);
+
+                        Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName)).Progress = progress;
+
+                        foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName)))
+                        {
+                            item.Progress = 0;
+                        }
+                    if (progress >= 100) Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName)).Progress = 0;
+                    }
+                    Sounds.RaiseListChangedEvents = true;
+                    Thread.Sleep(10);
+                }
+            });
         }
 
         private void SearchSounds(string target)
@@ -74,6 +109,7 @@ namespace MemeBox.ViewModels
         public void PlaySound(object soundName)
         {
             var sound = Sounds.FirstOrDefault(x => x.Name == (string)soundName);
+            playingSoundFileReader = new AudioFileReader(sound.Path);
 
             try
             {

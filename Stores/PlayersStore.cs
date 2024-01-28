@@ -1,4 +1,6 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Utils;
+using NAudio.Wave;
+using System;
 using System.Windows.Forms;
 
 namespace MemeBox.Stores
@@ -8,7 +10,7 @@ namespace MemeBox.Stores
         private SettingsStore settingsStore;
         public WaveOut MainPlayer { get; set; } = new();
         public WaveOut AuxPlayer { get; set; } = new();
-
+        
         public PlayersStore(SettingsStore settingsStore)
         {
             this.settingsStore = settingsStore;

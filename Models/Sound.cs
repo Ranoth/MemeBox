@@ -11,7 +11,8 @@ namespace MemeBox.Models
         private HotKey hotKey = new HotKey(Key.None, ModifierKeys.None);
         [ObservableProperty]
         private string? nameBind;
-
+        [ObservableProperty]
+        private int? progress;
         public string? Name
         {
             get => name;

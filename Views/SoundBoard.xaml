@@ -49,16 +49,26 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button MinHeight="50" MinWidth="50" FontSize="15" Margin="15"
+                        <Button MinHeight="50" MinWidth="50" FontSize="15" Margin="5"
                                         Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.PlaySoundCommand}" 
                                         CommandParameter="{Binding Name}"
                                         ContextMenuService.ShowOnDisabled="True">
 
-                            <StackPanel Orientation="Horizontal">
-                                <Image Height="22" Source="/Images/playIcon.png"/>
-                                <TextBlock Text="{Binding NameBind}" Margin="5,0,0,0"/>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <ProgressBar Height="50" Value="{Binding Progress}" Foreground="PaleVioletRed"/>
+                                
+                                <StackPanel Orientation="Horizontal" >
+                                    <Image Height="22" Source="/Images/playIcon.png"/>
+                                    <TextBlock Text="{Binding NameBind}" Margin="5,0,0,0"
+                                                VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
 
                             <Button.ContextMenu>
                                 <ContextMenu>
