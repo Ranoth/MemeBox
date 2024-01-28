@@ -68,12 +68,12 @@ namespace MemeBox.ViewModels
                 {
                     if (playingSoundFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var progress = (int)(playersStore.MainPlayer?.GetPositionTimeSpan().TotalSeconds / playingSoundFileReader.TotalTime.TotalSeconds * 100);
+                        var progress = (int)(playersStore.MainPlayer?.GetPositionTimeSpan().TotalSeconds / playingSoundFileReader.TotalTime.TotalSeconds * 1000);
 
                         var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName));
-                        if (sound != null && sound.Progress != progress && progress < 100) sound.SetProgress(settingsStore, progress);
+                        if (sound != null && sound.Progress != progress && progress < 1000) sound.SetProgress(settingsStore, progress);
 
-                        if (progress > 99 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing) sound.SetProgress(settingsStore, 0);
+                        if (progress > 999 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing) sound.SetProgress(settingsStore, 0);
                     }
                     Thread.Sleep(50);
                 }

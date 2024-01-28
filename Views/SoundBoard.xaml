@@ -61,7 +61,7 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <ProgressBar Height="50" Value="{Binding Progress}" Foreground="PaleVioletRed" Minimum="0" Maximum="100" Opacity="0.4"/>
+                                <ProgressBar Height="50" Value="{Binding Progress}" Foreground="PaleVioletRed" Minimum="0" Maximum="1000" Opacity="0.5"/>
 
                                 <StackPanel Orientation="Horizontal">
                                     <Image Height="22" Source="/Images/playIcon.png"/>
