@@ -68,12 +68,12 @@ namespace MemeBox.ViewModels
                 {
                     Sounds.RaiseListChangedEvents = false;
 
-
                     if (playingSoundFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
                     {
                         var progress = (int)(playersStore.MainPlayer?.GetPositionTimeSpan().TotalSeconds / playingSoundFileReader.TotalTime.TotalSeconds * 100);
 
-                        Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName)).Progress = progress;
+                        var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName));
+                        if (sound != null) sound.Progress = progress;
 
                         foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName)))
                         {
@@ -234,6 +234,8 @@ namespace MemeBox.ViewModels
             if (MessageBox.Show($"Do you truly wish to remove {soundName} ?", "Remove Button", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 RemoveSound(soundName);
+                playersStore.MainPlayer.Pause();
+                playersStore.AuxPlayer.Pause();
             }
         }
         private void RemoveSound(string soundName)

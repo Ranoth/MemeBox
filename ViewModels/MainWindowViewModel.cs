@@ -184,6 +184,8 @@ namespace MemeBox.ViewModels
                                                MessageBoxButton.YesNo,
                                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
+                playersStore.MainPlayer.Pause();
+                playersStore.AuxPlayer.Pause();
                 settingsStore.UserSounds.Clear();
                 RemoveAllSoundsCommand.NotifyCanExecuteChanged();
             }
