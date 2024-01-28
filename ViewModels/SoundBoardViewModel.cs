@@ -78,7 +78,7 @@ namespace MemeBox.ViewModels
                         {
                             item.SetProgress(settingsStore, 0);
                         }
-                        if (playersStore.MainPlayer.PlaybackState != PlaybackState.Playing)
+                        if (progress >= 100 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing)
                         {
                             sound.SetProgress(settingsStore, 0);
                         }
