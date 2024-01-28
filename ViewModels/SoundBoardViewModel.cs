@@ -231,6 +231,8 @@ namespace MemeBox.ViewModels
                 RemoveSound(soundName);
                 playersStore.MainPlayer.Pause();
                 playersStore.AuxPlayer.Pause();
+                var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
+                if (sound != null) sound.SetProgress(settingsStore, 0);
             }
         }
         private void RemoveSound(string soundName)
