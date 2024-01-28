@@ -71,7 +71,7 @@ namespace MemeBox.ViewModels
                         var progress = (int)(playersStore.MainPlayer?.GetPositionTimeSpan().TotalSeconds / playingSoundFileReader.TotalTime.TotalSeconds * 100);
 
                         var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName));
-                        if (sound != null) sound.SetProgress(settingsStore, progress);
+                        if (sound != null && sound.Progress != progress && progress < 100) sound.SetProgress(settingsStore, progress);
 
                         foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
 
