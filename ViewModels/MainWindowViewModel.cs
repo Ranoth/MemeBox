@@ -75,8 +75,10 @@ namespace MemeBox.ViewModels
         [RelayCommand(CanExecute = nameof(CanOpenSettingsWindow))]
         private void OpenSettingsWindow()
         {
+            settingsStore.AllowDrop = false;
             SettingsWindow = new SettingsWindow(settingsStore, playersStore, this);
             SettingsWindow.ShowDialog();
+            settingsStore.AllowDrop = true;
         }
 
         private bool CanOpenSettingsWindow() => SettingsWindow == null;
@@ -129,16 +131,19 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void SetKeyBind()
         {
+            settingsStore.AllowDrop = false;
             keyBindChanging = true;
             var keyBindDialog = new KeysBindsWindow(settingsStore, true);
             keyBindDialog.ShowDialog();
             keyBindChanging = false;
+            settingsStore.AllowDrop = true;
         }
 
         [RelayCommand]
         private void ClearKeyBind()
         {
-            if (settingsStore.Settings.HotKey.Key == Key.None) return;
+            settingsStore.AllowDrop = false;
+            if (settingsStore.Settings.HotKey.Key == Key.None) { settingsStore.AllowDrop = true; return; };
 
             if (MessageBox.Show($"Do you truly wish to clear the stop button's bound key ?",
                                 "Clear Keybind",
@@ -147,11 +152,13 @@ namespace MemeBox.ViewModels
             {
                 settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
             }
+            settingsStore.AllowDrop = true;
         }
 
         [RelayCommand(CanExecute = nameof(CanExecuteUnbindAllButtons))]
         private void UnbindAllButtons()
         {
+            settingsStore.AllowDrop = false;
             if (MessageBox.Show($"Do you truly wish to unbind all buttons ?",
                                 "Unbind All Buttons",
                                 MessageBoxButton.YesNo,
@@ -168,6 +175,7 @@ namespace MemeBox.ViewModels
                     MessageBox.Show("Error : " + ex.ToString());
                 }
                 UnbindAllButtonsCommand.NotifyCanExecuteChanged();
+                settingsStore.AllowDrop = true;
             }
         }
         private bool CanExecuteUnbindAllButtons()
@@ -179,6 +187,7 @@ namespace MemeBox.ViewModels
         [RelayCommand(CanExecute = nameof(CanExecuteRemoveAllSounds))]
         private void RemoveAllSounds()
         {
+            settingsStore.AllowDrop = false;
             if (MessageBox.Show($"Do you truly wish to remove all sounds ?",
                                                "Remove All Sounds",
                                                MessageBoxButton.YesNo,
@@ -189,6 +198,7 @@ namespace MemeBox.ViewModels
                 settingsStore.UserSounds.Clear();
                 RemoveAllSoundsCommand.NotifyCanExecuteChanged();
             }
+            settingsStore.AllowDrop = true;
         }
 
         private bool CanExecuteRemoveAllSounds()

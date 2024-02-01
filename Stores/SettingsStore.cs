@@ -18,8 +18,19 @@ namespace MemeBox.Stores
         public string SettingsFilePath { get; set; } = "settings.xml";
         public string UserSoundsFilePath { get; set; } = "UserSounds.xml";
         public List<WaveOutCapabilities> AudioOutCapabilities { get; set; } = new();
-
+        private bool allowDrop = false;
+        public Action? SettingsWindowOpenChanged;
         public BindingList<Sound> UserSounds { get; set; } = new();
+
+        public bool AllowDrop
+        {
+            get => allowDrop;
+            set
+            {
+                allowDrop = value;
+                SettingsWindowOpenChanged?.Invoke();
+            }
+        }   
         public SettingsStore()
         {
             ReadXmlSounds();

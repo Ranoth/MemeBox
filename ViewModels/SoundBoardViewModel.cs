@@ -19,6 +19,8 @@ using System.Diagnostics;
 using NAudio.Utils;
 using System.Windows.Threading;
 using System;
+using System.Diagnostics.Tracing;
+using System.Windows;
 
 namespace MemeBox.ViewModels
 {
@@ -26,17 +28,19 @@ namespace MemeBox.ViewModels
     {
         private SettingsStore settingsStore;
         private PlayersStore playersStore;
-        private Sound removedSound;
-        private string searchText;
-        private AudioFileReader playingSoundFileReader;
+        private Sound? removedSound;
+        private string? searchText;
+        private AudioFileReader? playingSoundFileReader;
 
         [ObservableProperty]
         private BindingList<Sound> displayedSounds;
+        [ObservableProperty]
+        private bool allowDrop = true;
 
         public bool KeyBindChanging { get; set; } = false;
         public PlaySoundCommand PlaySoundCommand { get; set; }
         public BindingList<Sound> Sounds { get; private set; } = new();
-        public string SearchText
+        public string? SearchText
         {
             get => searchText;
             set
@@ -60,6 +64,13 @@ namespace MemeBox.ViewModels
             UpdateProgress();
         }
 
+        [RelayCommand]
+        private void DropFile(DragEventArgs args)
+        {
+            string?[] filePath = (string?[])args.Data.GetData("FileNameW");
+            Sound sound = new Sound { Name = Path.GetFileNameWithoutExtension(filePath[0]), Path = filePath[0] };
+            Sounds.Add(sound);
+        }
         private async void UpdateProgress()
         {
             await Task.Run(() =>
@@ -80,7 +91,7 @@ namespace MemeBox.ViewModels
             });
         }
 
-        private void SearchSounds(string target)
+        private void SearchSounds(string? target)
         {
             if (target == null || target == string.Empty)
             {
@@ -92,6 +103,7 @@ namespace MemeBox.ViewModels
 
         private void RegisterMessengers()
         {
+            settingsStore.SettingsWindowOpenChanged += () => AllowDrop = settingsStore.AllowDrop;
             settingsStore.UserSounds.ListChanged += (s, e) =>
             {
                 UpdateUserSoundsXml(s, e);
@@ -102,11 +114,12 @@ namespace MemeBox.ViewModels
         public void PlaySound(object soundName)
         {
             var sound = Sounds.FirstOrDefault(x => x.Name == (string)soundName);
-            playingSoundFileReader = new AudioFileReader(sound.Path);
-            foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
 
             try
             {
+                playingSoundFileReader = new AudioFileReader(sound.Path);
+                foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
+
                 playersStore.MainPlayer.Pause();
                 playersStore.MainPlayer = InitPlayer(playersStore.MainPlayer, sound);
                 playersStore.MainPlayer.Play();
@@ -117,8 +130,12 @@ namespace MemeBox.ViewModels
             }
             catch (Exception ex)
             {
-                if (ex.GetType() == typeof(COMException)) MessageBox.Show("File format unsupported by the application, please try any audio file format supported by " +
-                "Windows Media Foundation");
+                if (ex.GetType() == typeof(COMException))
+                {
+                    MessageBox.Show("File format unsupported by the application, please try any audio file format supported by " +
+                                    "Windows Media Foundation");
+                    sound.Path = string.Empty;
+                }
             }
         }
 
@@ -127,26 +144,33 @@ namespace MemeBox.ViewModels
             try
             {
                 var sound = Sounds.SingleOrDefault(x => x.Name == ((string)soundName));
-                if (File.Exists(sound?.Path ?? String.Empty))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                new AudioFileReader(sound?.Path ?? String.Empty);
+                if (File.Exists(sound?.Path ?? String.Empty)) return true;
+                else return false;
             }
             catch (Exception ex)
             {
                 if (ex.GetType() == typeof(InvalidOperationException))
                 {
+                    AllowDrop = false;
                     RemoveSound((string)soundName);
                     System.Windows.MessageBox.Show($"Cannot add duplicates ({soundName})");
+                    AllowDrop = true;
                     return true;
+                }
+                else if (ex.GetType() == typeof(NullReferenceException)) return false;
+                else if (ex.GetType() == typeof(COMException))
+                {
+                    AllowDrop = false;
+                    RemoveSound((string)soundName);
+                    System.Windows.MessageBox.Show("File format unsupported by the application, please try any audio file format supported by " +
+                                                           "Windows Media Foundation");
+                    AllowDrop = true;
+                    return false;
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show(ex.Message);
+                    //System.Windows.MessageBox.Show(ex.Message);
                     return false;
                 }
             }
@@ -225,6 +249,7 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void RemoveButton(string soundName)
         {
+            AllowDrop = false;
             if (MessageBox.Show($"Do you truly wish to remove {soundName} ?", "Remove Button", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 RemoveSound(soundName);
@@ -233,6 +258,7 @@ namespace MemeBox.ViewModels
                 var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
                 if (sound != null) sound.SetProgress(settingsStore, 0);
             }
+            AllowDrop = true;
         }
         private void RemoveSound(string soundName)
         {
@@ -245,14 +271,17 @@ namespace MemeBox.ViewModels
         private void SetKeyBind(string soundName)
         {
             KeyBindChanging = true;
+            AllowDrop = false;
             var keyBindDialog = new KeysBindsWindow(settingsStore, Sounds.SingleOrDefault(x => x.Name == soundName));
             keyBindDialog.ShowDialog();
             KeyBindChanging = false;
+            AllowDrop = true;
         }
 
         [RelayCommand]
         private void ClearKeyBind(string soundName)
         {
+            AllowDrop = false;
             var sound = Sounds.SingleOrDefault(x => x.Name == soundName);
             if (sound.HotKey.Key == Key.None) return;
             if (MessageBox.Show($"Do you truly wish to clear {soundName}'s bound key ?",
@@ -262,6 +291,7 @@ namespace MemeBox.ViewModels
             {
                 sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
             }
+            AllowDrop = true;
         }
 
         [RelayCommand]
@@ -269,11 +299,9 @@ namespace MemeBox.ViewModels
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new();
             openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() != MessageBoxResult.OK) return;
+            if (openFileDialog.ShowDialog() != MessageBoxResult.OK) { AllowDrop = true; return; }
 
-            var sound = new Sound { Name = openFileDialog.SafeFileName, Path = openFileDialog.FileName };
-            sound.Name = sound.Name.Remove(sound.Name.LastIndexOf('.'));
-
+            var sound = new Sound { Name = Path.GetFileNameWithoutExtension(openFileDialog.SafeFileName), Path = openFileDialog.FileName };
             Sounds.Add(sound);
         }
     }
