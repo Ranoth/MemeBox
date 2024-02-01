@@ -70,6 +70,7 @@ namespace MemeBox.ViewModels
             string?[] filePath = (string?[])args.Data.GetData("FileNameW");
             Sound sound = new Sound { Name = Path.GetFileNameWithoutExtension(filePath[0]), Path = filePath[0] };
             Sounds.Add(sound);
+            CanPlaySound(sound.Name);
         }
         private async void UpdateProgress()
         {
@@ -117,7 +118,7 @@ namespace MemeBox.ViewModels
 
             try
             {
-                playingSoundFileReader = new AudioFileReader(sound.Path);
+                //playingSoundFileReader = new AudioFileReader(sound.Path);
                 foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
 
                 playersStore.MainPlayer.Pause();
@@ -164,7 +165,7 @@ namespace MemeBox.ViewModels
                     AllowDrop = false;
                     RemoveSound((string)soundName);
                     System.Windows.MessageBox.Show("File format unsupported by the application, please try any audio file format supported by " +
-                                                           "Windows Media Foundation");
+                                                   "Windows Media Foundation");
                     AllowDrop = true;
                     return false;
                 }
