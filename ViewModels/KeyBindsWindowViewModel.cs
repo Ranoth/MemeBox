@@ -66,12 +66,17 @@ namespace MemeBox.ViewModels
                 soundToUpdate.HotKey = KeyToBind;
                 view.Close();
             }
-            else if (MessageBox.Show($"This key has already been bound, clear old keybind from {sound.Name} to assign it to {soundToUpdate.Name} ?",
+            else if (sound.Name != soundToUpdate.Name && MessageBox.Show($"This key has already been bound, clear old keybind from {sound.Name} to assign it to {soundToUpdate.Name} ?",
                      "Reassign Keybind",
                      MessageBoxButton.YesNo,
                      MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
+                soundToUpdate.HotKey = KeyToBind;
+                view.Close();
+            }
+            else if (sound.Name == soundToUpdate.Name)
+            {
                 soundToUpdate.HotKey = KeyToBind;
                 view.Close();
             }
