@@ -118,7 +118,7 @@ namespace MemeBox.ViewModels
 
             try
             {
-                //playingSoundFileReader = new AudioFileReader(sound.Path);
+                playingSoundFileReader = new AudioFileReader(sound.Path);
                 foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
 
                 playersStore.MainPlayer.Pause();
