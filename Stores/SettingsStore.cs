@@ -5,9 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using WPFUtilsBox.EasyXml;
-using WPFUtilsBox.GlobalKeyboardHooker;
 using WPFUtilsBox.HotKeyer;
 
 namespace MemeBox.Stores

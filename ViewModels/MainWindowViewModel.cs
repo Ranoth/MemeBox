@@ -12,10 +12,6 @@ using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.EasyXml;
 using AutoUpdaterDotNET;
-using System.Collections.Specialized;
-using MemeBox.Models;
-using System.ComponentModel;
-using NAudio.Utils;
 
 namespace MemeBox.ViewModels
 {
@@ -86,8 +82,8 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void StopPlayback()
         {
-            playersStore.MainPlayer.Pause();
-            playersStore.AuxPlayer.Pause();
+            playersStore.PausePlayers();
+
             var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
             if (sound != null) sound.SetProgress(settingsStore, 0);
         }
@@ -193,8 +189,7 @@ namespace MemeBox.ViewModels
                                                MessageBoxButton.YesNo,
                                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                playersStore.MainPlayer.Pause();
-                playersStore.AuxPlayer.Pause();
+                playersStore.PausePlayers();
                 settingsStore.UserSounds.Clear();
                 RemoveAllSoundsCommand.NotifyCanExecuteChanged();
             }

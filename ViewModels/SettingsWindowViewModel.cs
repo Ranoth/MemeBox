@@ -1,10 +1,8 @@
-﻿using MemeBox.Models;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using System.ComponentModel;
 using System.Windows;
 using MemeBox.Stores;
 using WPFUtilsBox.EasyXml;
-using System.Windows.Threading;
 
 namespace MemeBox.ViewModels
 {
@@ -100,8 +98,7 @@ namespace MemeBox.ViewModels
 
         private void StopPlayback()
         {
-            playersStore.MainPlayer.Pause();
-            playersStore.AuxPlayer.Pause();
+            playersStore.PausePlayers();
             var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
             if (sound != null) sound.SetProgress(settingsStore, 0);
         }

@@ -1,7 +1,5 @@
-﻿using NAudio.Utils;
+﻿using MemeBox.Models;
 using NAudio.Wave;
-using System;
-using System.Windows.Forms;
 
 namespace MemeBox.Stores
 {
@@ -32,6 +30,24 @@ namespace MemeBox.Stores
                  .IndexOf(settingsStore.AudioOutCapabilities
                  .FirstOrDefault(x => x.ProductName == settingsStore.Settings.SetOut));
             MainPlayer.Volume = settingsStore.Settings.VolumeMain;
+        }
+
+        public void InitPlayers(Sound sound)
+        {
+            if (MainPlayer.DeviceNumber != -1) MainPlayer.Init(new WaveChannel32(new AudioFileReader(sound.Path)));
+            if (AuxPlayer.DeviceNumber != -1) AuxPlayer.Init(new WaveChannel32(new AudioFileReader(sound.Path)));
+        }
+
+        public void PlayPlayers()
+        {
+            MainPlayer.Play();
+            AuxPlayer.Play();
+        }
+
+        public void PausePlayers()
+        {
+            MainPlayer.Pause();
+            AuxPlayer.Pause();
         }
     }
 }

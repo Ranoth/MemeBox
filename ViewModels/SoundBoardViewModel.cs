@@ -15,11 +15,7 @@ using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using WPFUtilsBox.HotKeyer;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Diagnostics;
 using NAudio.Utils;
-using System.Windows.Threading;
-using System;
-using System.Diagnostics.Tracing;
 using System.Windows;
 
 namespace MemeBox.ViewModels
@@ -119,15 +115,14 @@ namespace MemeBox.ViewModels
             try
             {
                 playingSoundFileReader = new AudioFileReader(sound.Path);
-                foreach (var item in Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName))) item.SetProgress(settingsStore, 0);
 
-                playersStore.MainPlayer.Pause();
-                playersStore.MainPlayer = InitPlayer(playersStore.MainPlayer, sound);
-                playersStore.MainPlayer.Play();
+                var _ = Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(playingSoundFileReader.FileName));
 
-                playersStore.AuxPlayer.Pause();
-                playersStore.AuxPlayer = InitPlayer(playersStore.AuxPlayer, sound);
-                if (playersStore.AuxPlayer.DeviceNumber != -1) playersStore.AuxPlayer.Play();
+                foreach (var item in _) item.SetProgress(settingsStore, 0);
+
+                playersStore.PausePlayers();
+                playersStore.InitPlayers(sound);
+                playersStore.PlayPlayers();
             }
             catch (Exception ex)
             {
@@ -135,6 +130,7 @@ namespace MemeBox.ViewModels
                 {
                     MessageBox.Show("File format unsupported by the application, please try any audio file format supported by " +
                                     "Windows Media Foundation");
+
                     sound.Path = string.Empty;
                 }
             }
@@ -175,13 +171,6 @@ namespace MemeBox.ViewModels
                     return false;
                 }
             }
-        }
-
-
-        private WaveOut InitPlayer(WaveOut player, Sound sound)
-        {
-            if (player.DeviceNumber != -1) player.Init(new WaveChannel32(new AudioFileReader(sound.Path)));
-            return player;
         }
 
         private void UpdateUserSoundsXml(object? sender, ListChangedEventArgs e)
@@ -254,8 +243,7 @@ namespace MemeBox.ViewModels
             if (MessageBox.Show($"Do you truly wish to remove {soundName} ?", "Remove Button", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 RemoveSound(soundName);
-                playersStore.MainPlayer.Pause();
-                playersStore.AuxPlayer.Pause();
+                playersStore.PausePlayers();
                 var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
                 if (sound != null) sound.SetProgress(settingsStore, 0);
             }
