@@ -105,10 +105,7 @@ namespace MemeBox.ViewModels
         private bool CanOpenSettingsWindow() => SettingsWindow == null;
 
         [RelayCommand(CanExecute = nameof(CanExecutePausePlayback))]
-        private void PausePlayback()
-        {
-            playersStore.PausePlayers();
-        }
+        private void PausePlayback() => playersStore.PausePlayers();
         public void OnKeyDownGlobal(object sender, GlobalKeyboardHookEventArgs e)
         {
             if (!e.KeyboardState.HasFlag(GlobalKeyboardHook.KeyboardState.KeyUp))
@@ -135,14 +132,12 @@ namespace MemeBox.ViewModels
                             && !(crvm as SoundBoardViewModel).KeyBindChanging)
                         {
                             PausePlayback();
-                            ResumeSoundCommand.NotifyCanExecuteChanged();
                         }
                         else if (sound == null && key.Key == settingsStore.Settings.ResumeButtonHotKey.Key
                             && key.Modifiers == settingsStore.Settings.ResumeButtonHotKey.Modifiers
                             && !(crvm as SoundBoardViewModel).KeyBindChanging)
                         {
                             ResumeSound();
-                            PausePlaybackCommand.NotifyCanExecuteChanged();
                         }
                     }
                 }
@@ -245,10 +240,7 @@ namespace MemeBox.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CanExecuteResumePlayback))]
-        private void ResumeSound()
-        {
-            playersStore.ResumePlayers();
-        }
+        private void ResumeSound() => playersStore.ResumePlayers();
 
         private bool CanExecuteResumePlayback()
         {

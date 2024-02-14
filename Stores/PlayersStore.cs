@@ -13,7 +13,6 @@ namespace MemeBox.Stores
         private SettingsStore settingsStore;
         public WaveOut MainPlayer { get; set; } = new();
         public WaveOut AuxPlayer { get; set; } = new();
-        public AudioFileReader? PlayingSoundFileReader;
         public PlayersStore(SettingsStore settingsStore)
         {
             this.settingsStore = settingsStore;
