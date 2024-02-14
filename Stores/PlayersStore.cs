@@ -1,5 +1,10 @@
-﻿using MemeBox.Models;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using MemeBox.Messages;
+using MemeBox.Models;
 using NAudio.Wave;
+using System;
+using WPFUtilsBox.EasyXml;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace MemeBox.Stores
 {
@@ -8,7 +13,7 @@ namespace MemeBox.Stores
         private SettingsStore settingsStore;
         public WaveOut MainPlayer { get; set; } = new();
         public WaveOut AuxPlayer { get; set; } = new();
-        
+        public AudioFileReader? PlayingSoundFileReader;
         public PlayersStore(SettingsStore settingsStore)
         {
             this.settingsStore = settingsStore;
@@ -18,7 +23,7 @@ namespace MemeBox.Stores
             this.settingsStore.Settings.PropertyChanged += (s, e) => UpdatePlayersSettings();
         }
 
-        // ToDo: Find why MainPlayer.Volume also sets AuxPlayer.Volume but only some times and why settings AuxPlayer.Volume first sort of fixes it
+        // ToDo: Find why MainPlayer.Volume also sets AuxPlayer.Volume but only some times and why settings AuxPlayer.Volume first functionally fixes it
         private void UpdatePlayersSettings()
         {
             AuxPlayer.DeviceNumber = settingsStore.AudioOutCapabilities
@@ -30,6 +35,15 @@ namespace MemeBox.Stores
                  .IndexOf(settingsStore.AudioOutCapabilities
                  .FirstOrDefault(x => x.ProductName == settingsStore.Settings.SetOut));
             MainPlayer.Volume = settingsStore.Settings.VolumeMain;
+
+            try
+            {
+                XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error : " + ex.ToString());
+            }
         }
 
         public void InitPlayers(Sound sound)
@@ -42,12 +56,28 @@ namespace MemeBox.Stores
         {
             MainPlayer.Play();
             AuxPlayer.Play();
+            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
         }
 
         public void PausePlayers()
         {
             MainPlayer.Pause();
             AuxPlayer.Pause();
+            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
+        }
+
+        public void ResumePlayers()
+        {
+            MainPlayer.Resume();
+            AuxPlayer.Resume();
+            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
+        }
+
+        public void StopPlayers()
+        {
+            MainPlayer.Stop();
+            AuxPlayer.Stop();
+            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
         }
     }
 }

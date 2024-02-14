@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using MemeBox.Messages;
 using MemeBox.Stores;
 using System.Windows.Input;
 using WPFUtilsBox.HotKeyer;
@@ -35,7 +37,10 @@ namespace MemeBox.Models
         public int Progress
         {
             get => progress ?? 0;
-            set => SetProperty(ref progress, value);
+            set
+            {
+                SetProperty(ref progress, value);
+            }
         }
 
         public void SetProgress(SettingsStore settingsStore, int progress)

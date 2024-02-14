@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms.Design;
 using System.Windows.Input;
 using WPFUtilsBox.HotKeyer;
 
@@ -53,20 +54,38 @@ namespace MemeBox.Models
             }
         }
 
-        private HotKey hotKey = new(Key.None, ModifierKeys.None);
-        public HotKey HotKey
+        private HotKey pauseButtonHotKey = new(Key.None, ModifierKeys.None);
+        public HotKey PauseButtonHotKey
         {
-            get => hotKey;
+            get => pauseButtonHotKey;
             set
             {
-                hotKey = value;
-                // OnPropertyChanged();
-                HotKeyChanged?.Invoke();
+                pauseButtonHotKey = value;
+                OnPropertyChanged();
+                PauseButtonHotKeyChanged?.Invoke();
             }
         }
+        public event Action? PauseButtonHotKeyChanged;
 
-        public event Action? HotKeyChanged;
+        private HotKey resumeButtonHotKey = new HotKey(Key.None, ModifierKeys.None);
+        public HotKey ResumeButtonHotKey
+        {
+            get => resumeButtonHotKey;
+            set
+            {
+                resumeButtonHotKey = value;
+                OnPropertyChanged();
+                ResumeButtonHotKeyChanged?.Invoke();
+            }
+        }
+        public event Action? ResumeButtonHotKeyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public string SetButtonName(HotKey? hotKey, string buttonName)
+        {
+            if ((hotKey?.Key ?? Key.None) == Key.None) return $"{buttonName} Playback";
+            else return $"{buttonName} Playback -> {hotKey}";
+        }
     }
 }

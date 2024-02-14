@@ -46,23 +46,54 @@
                     </StackPanel>
                 </Button>
                 <Separator/>
-                <Button Height="22" Command="{Binding StopPlaybackCommand}">
+                <Button Height="22" Command="{Binding PausePlaybackCommand}"
+                        ContextMenuService.ShowOnDisabled="True">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Images/stopPlaybackIcon.png"/>
-                        <TextBlock Margin="2,0,0,0" Text="{Binding StopButtonName}"/>
+                        <TextBlock Margin="2,0,0,0" Text="{Binding PauseButtonName}"/>
                     </StackPanel>
                     <Button.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Set KeyBind"
-                                              Command="{Binding SetKeyBindCommand}"
-                                              ContextMenuService.ShowOnDisabled="True">
+                                      Command="{Binding SetKeyBindCommand}"
+                                      CommandParameter="Pause"
+                                      ContextMenuService.ShowOnDisabled="True">
                                 <MenuItem.Icon>
                                     <Image Source="/Images/bindIcon.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem Header="Clear KeyBind"
-                                              Command="{Binding ClearKeyBindCommand}"
-                                              ContextMenuService.ShowOnDisabled="True">
+                                      Command="{Binding ClearKeyBindCommand}"
+                                      CommandParameter="Pause"
+                                      ContextMenuService.ShowOnDisabled="True">
+                                <MenuItem.Icon>
+                                    <Image Source="/Images/delIcon.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Separator/>
+                <Button Height="22" Command="{Binding ResumeSoundCommand}"
+                        ContextMenuService.ShowOnDisabled="True">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Images/playIcon.png"/>
+                        <TextBlock Margin="2,0,0,0" Text="{Binding ResumeButtonName}"/>
+                    </StackPanel>
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Set KeyBind"
+                                      Command="{Binding SetKeyBindCommand}"
+                                      CommandParameter="Resume"
+                                      ContextMenuService.ShowOnDisabled="True">
+                                <MenuItem.Icon>
+                                    <Image Source="/Images/bindIcon.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Clear KeyBind"
+                                      Command="{Binding ClearKeyBindCommand}"
+                                      CommandParameter="Resume"
+                                      ContextMenuService.ShowOnDisabled="True">
                                 <MenuItem.Icon>
                                     <Image Source="/Images/delIcon.png"/>
                                 </MenuItem.Icon>

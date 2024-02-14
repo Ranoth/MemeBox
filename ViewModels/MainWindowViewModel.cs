@@ -10,8 +10,10 @@ using MessageBox = System.Windows.Forms.MessageBox;
 using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
-using WPFUtilsBox.EasyXml;
 using AutoUpdaterDotNET;
+using CommunityToolkit.Mvvm.Messaging;
+using MemeBox.Messages;
+using NAudio.Wave;
 
 namespace MemeBox.ViewModels
 {
@@ -21,7 +23,9 @@ namespace MemeBox.ViewModels
         private readonly SettingsStore settingsStore = new();
         private PlayersStore playersStore;
         [ObservableProperty]
-        private string stopButtonName;
+        private string pauseButtonName;
+        [ObservableProperty]
+        private string resumeButtonName;
 
         private bool keyBindChanging = false;
 
@@ -44,22 +48,43 @@ namespace MemeBox.ViewModels
 
             navigationStore.CurrentViewModel = new SoundBoardViewModel(settingsStore, playersStore);
 
-            SetStopButton();
+            SetPauseButton();
+            SetResumeButton();
 
-            settingsStore.Settings.HotKeyChanged += () => SetStopButton();
+            settingsStore.Settings.PauseButtonHotKeyChanged += () =>
+            {
+                SetPauseButton();
+                UnbindAllButtonsCommand.NotifyCanExecuteChanged();
+            };
+            settingsStore.Settings.ResumeButtonHotKeyChanged += () =>
+            {
+                SetResumeButton();
+                UnbindAllButtonsCommand.NotifyCanExecuteChanged();
+            };
+
             settingsStore.UserSounds.ListChanged += (s, e) =>
             {
                 UnbindAllButtonsCommand.NotifyCanExecuteChanged();
                 RemoveAllSoundsCommand.NotifyCanExecuteChanged();
             };
-            settingsStore.Settings.HotKeyChanged += () => UnbindAllButtonsCommand.NotifyCanExecuteChanged();
+
+            WeakReferenceMessenger.Default.Register<PlaybackStateChangedMessage>(this, (r, m) =>
+            {
+                ResumeSoundCommand.NotifyCanExecuteChanged();
+                PausePlaybackCommand.NotifyCanExecuteChanged();
+            });
 
             InitCommands();
         }
-        private void SetStopButton()
+
+        private void SetResumeButton()
         {
-            if ((settingsStore.Settings.HotKey?.Key ?? Key.None) == Key.None) StopButtonName = "Stop Playback";
-            else StopButtonName = "Stop Playback -> " + settingsStore.Settings.HotKey;
+            ResumeButtonName = settingsStore.Settings.SetButtonName(settingsStore.Settings.ResumeButtonHotKey, "Resume");
+        }
+
+        private void SetPauseButton()
+        {
+            PauseButtonName = settingsStore.Settings.SetButtonName(settingsStore.Settings.PauseButtonHotKey, "Pause");
         }
 
         private void InitCommands()
@@ -79,13 +104,10 @@ namespace MemeBox.ViewModels
 
         private bool CanOpenSettingsWindow() => SettingsWindow == null;
 
-        [RelayCommand]
-        private void StopPlayback()
+        [RelayCommand(CanExecute = nameof(CanExecutePausePlayback))]
+        private void PausePlayback()
         {
             playersStore.PausePlayers();
-
-            var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
-            if (sound != null) sound.SetProgress(settingsStore, 0);
         }
         public void OnKeyDownGlobal(object sender, GlobalKeyboardHookEventArgs e)
         {
@@ -108,11 +130,19 @@ namespace MemeBox.ViewModels
                         {
                             if ((crvm as SoundBoardViewModel).CanPlaySound(sound.Name)) (crvm as SoundBoardViewModel).PlaySound(sound.Name);
                         }
-                        else if (sound == null && key.Key == settingsStore.Settings.HotKey.Key
-                            && key.Modifiers == settingsStore.Settings.HotKey.Modifiers
+                        else if (sound == null && key.Key == settingsStore.Settings.PauseButtonHotKey.Key
+                            && key.Modifiers == settingsStore.Settings.PauseButtonHotKey.Modifiers
                             && !(crvm as SoundBoardViewModel).KeyBindChanging)
                         {
-                            StopPlayback();
+                            PausePlayback();
+                            ResumeSoundCommand.NotifyCanExecuteChanged();
+                        }
+                        else if (sound == null && key.Key == settingsStore.Settings.ResumeButtonHotKey.Key
+                            && key.Modifiers == settingsStore.Settings.ResumeButtonHotKey.Modifiers
+                            && !(crvm as SoundBoardViewModel).KeyBindChanging)
+                        {
+                            ResumeSound();
+                            PausePlaybackCommand.NotifyCanExecuteChanged();
                         }
                     }
                 }
@@ -125,29 +155,46 @@ namespace MemeBox.ViewModels
         }
 
         [RelayCommand]
-        private void SetKeyBind()
+        private void SetKeyBind(string buttonName)
         {
             settingsStore.AllowDrop = false;
             keyBindChanging = true;
-            var keyBindDialog = new KeysBindsWindow(settingsStore, true);
+            var keyBindDialog = new KeysBindsWindow(settingsStore, buttonName);
             keyBindDialog.ShowDialog();
             keyBindChanging = false;
             settingsStore.AllowDrop = true;
         }
 
         [RelayCommand]
-        private void ClearKeyBind()
+        private void ClearKeyBind(string buttonName)
         {
             settingsStore.AllowDrop = false;
-            if (settingsStore.Settings.HotKey.Key == Key.None) { settingsStore.AllowDrop = true; return; };
 
-            if (MessageBox.Show($"Do you truly wish to clear the stop button's bound key ?",
-                                "Clear Keybind",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (buttonName.StartsWith("Pause"))
             {
-                settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
+                if (settingsStore.Settings.PauseButtonHotKey.Key == Key.None) { settingsStore.AllowDrop = true; return; };
+
+                if (MessageBox.Show($"Do you truly wish to clear the pause button's bound key ?",
+                                    "Clear Keybind",
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    settingsStore.Settings.PauseButtonHotKey = new HotKey(Key.None, ModifierKeys.None);
+                }
             }
+            else if (buttonName.StartsWith("Resume"))
+            {
+                if (settingsStore.Settings.ResumeButtonHotKey.Key == Key.None) { settingsStore.AllowDrop = true; return; };
+
+                if (MessageBox.Show($"Do you truly wish to clear the resume button's bound key ?",
+                                                       "Clear Keybind",
+                                                       MessageBoxButton.YesNo,
+                                                       MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    settingsStore.Settings.ResumeButtonHotKey = new HotKey(Key.None, ModifierKeys.None);
+                }
+            }
+
             settingsStore.AllowDrop = true;
         }
 
@@ -161,22 +208,17 @@ namespace MemeBox.ViewModels
                                 MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 foreach (var sound in settingsStore.UserSounds) sound.HotKey = new HotKey(Key.None, ModifierKeys.None);
-                settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
-                try
-                {
-                    XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error : " + ex.ToString());
-                }
+                settingsStore.Settings.PauseButtonHotKey = new HotKey(Key.None, ModifierKeys.None);
+                settingsStore.Settings.ResumeButtonHotKey = new HotKey(Key.None, ModifierKeys.None);
+
                 UnbindAllButtonsCommand.NotifyCanExecuteChanged();
                 settingsStore.AllowDrop = true;
             }
         }
         private bool CanExecuteUnbindAllButtons()
         {
-            if (settingsStore.Settings.HotKey.Key == Key.None && settingsStore.UserSounds.All(x => x.HotKey.Key == Key.None)) return false;
+            if ((settingsStore.Settings.PauseButtonHotKey.Key == Key.None || settingsStore.Settings.ResumeButtonHotKey.Key == Key.None)
+                && settingsStore.UserSounds.All(x => x.HotKey.Key == Key.None)) return false;
             return true;
         }
 
@@ -189,7 +231,7 @@ namespace MemeBox.ViewModels
                                                MessageBoxButton.YesNo,
                                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                playersStore.PausePlayers();
+                playersStore.StopPlayers();
                 settingsStore.UserSounds.Clear();
                 RemoveAllSoundsCommand.NotifyCanExecuteChanged();
             }
@@ -200,6 +242,26 @@ namespace MemeBox.ViewModels
         {
             if (settingsStore.UserSounds.Count == 0) return false;
             return true;
+        }
+
+        [RelayCommand(CanExecute = nameof(CanExecuteResumePlayback))]
+        private void ResumeSound()
+        {
+            playersStore.ResumePlayers();
+        }
+
+        private bool CanExecuteResumePlayback()
+        {
+            if (playersStore.MainPlayer.PlaybackState == PlaybackState.Paused) return true;
+            else if (playersStore.MainPlayer.PlaybackState == PlaybackState.Stopped) return false;
+            return false;
+        }
+
+        private bool CanExecutePausePlayback()
+        {
+            if (playersStore.MainPlayer.PlaybackState == PlaybackState.Playing) return true;
+            else if (playersStore.MainPlayer.PlaybackState == PlaybackState.Stopped) return false;
+            return false;
         }
     }
 }

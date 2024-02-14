@@ -18,10 +18,10 @@ namespace MemeBox.Views
             DataContext = viewModel;
             KeyUp += viewModel.OnKeyUp;
         }
-        public KeysBindsWindow(SettingsStore settingsStore, bool isStopButton)
+        public KeysBindsWindow(SettingsStore settingsStore, string buttonName)
         {
             InitializeComponent();
-            viewModel = new KeyBindsWindowViewModel(settingsStore, this, isStopButton);
+            viewModel = new KeyBindsWindowViewModel(settingsStore, this, buttonName);
             DataContext = viewModel;
             KeyUp += viewModel.OnKeyUp;
         }

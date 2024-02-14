@@ -10,7 +10,6 @@ namespace MemeBox.ViewModels
     {
         private SettingsStore settingsStore;
         private PlayersStore playersStore;
-        private readonly MainWindowViewModel mainWindowViewModel;
 
         public List<WaveOutCapabilities> AudioOutDevicesList => settingsStore.AudioOutCapabilities;
         private WaveOutCapabilities? selectedOut = new();
@@ -62,11 +61,10 @@ namespace MemeBox.ViewModels
             }
         }
 
-        public SettingsWindowViewModel(SettingsStore settingsStore, PlayersStore playersStore, MainWindowViewModel mainWindowViewModel)
+        public SettingsWindowViewModel(SettingsStore settingsStore, PlayersStore playersStore)
         {
             this.settingsStore = settingsStore;
             this.playersStore = playersStore;
-            this.mainWindowViewModel = mainWindowViewModel;
 
             selectedOut = AudioOutDevicesList.Find(x =>
             {
@@ -82,23 +80,9 @@ namespace MemeBox.ViewModels
             volumeAux = settingsStore.Settings.VolumeAux;
         }
 
-        public void OnWindowClosing(object sender, CancelEventArgs e)
-        {
-            try
-            {
-                XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error : " + ex.ToString());
-            }
-
-            mainWindowViewModel.SettingsWindow = null;
-        }
-
         private void StopPlayback()
         {
-            playersStore.PausePlayers();
+            playersStore.StopPlayers();
             var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
             if (sound != null) sound.SetProgress(settingsStore, 0);
         }

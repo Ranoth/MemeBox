@@ -8,17 +8,14 @@ using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 
 namespace MemeBox.Views
 {
-    /// <summary>
-    /// Interaction logic for SettingsWindow.xaml
-    /// </summary>
     public partial class SettingsWindow : Window
     {
         public SettingsWindow(SettingsStore settingsStore, PlayersStore playersStore, MainWindowViewModel mainWindowViewModel)
         {
             InitializeComponent();
-            var viewModel = new SettingsWindowViewModel(settingsStore, playersStore, mainWindowViewModel);
+            var viewModel = new SettingsWindowViewModel(settingsStore, playersStore);
             DataContext = viewModel;
-            Closing += viewModel.OnWindowClosing;
+            Closing += (s, e) => mainWindowViewModel.SettingsWindow = null;
         }
 
         // stop the selected combo box value from changing if the user selects the same device for both main and aux

@@ -19,7 +19,7 @@ namespace MemeBox.ViewModels
         private SettingsStore settingsStore;
         private Sound soundToUpdate;
         private KeysBindsWindow view;
-        private bool isStopButton;
+        private string buttonName;
 
         public HotKey? KeyToBind { get; set; } = new HotKey(Key.None, ModifierKeys.None);
 
@@ -29,20 +29,21 @@ namespace MemeBox.ViewModels
             this.view = view;
             this.soundToUpdate = soundToUpdate;
         }
-        public KeyBindsWindowViewModel(SettingsStore settingsStore, KeysBindsWindow view, bool isStopButton)
+        public KeyBindsWindowViewModel(SettingsStore settingsStore, KeysBindsWindow view, string buttonName)
         {
             this.settingsStore = settingsStore;
             this.view = view;
-            this.isStopButton = isStopButton;
+            this.buttonName = buttonName;
         }
+
         public void OnKeyUp(object sender, KeyEventArgs e)
         {
             var key = KeyBinder.GatherHotKey(e);
             if (key != null) KeyToBind = key;
-            if (isStopButton) SetBindStopButton();
-            else SetBind();
+            if (buttonName != null) SetBindPlaybackButton(buttonName);
+            else SetBindSound();
         }
-        public void SetBind()
+        public void SetBindSound()
         {
             if (KeyToBind.Key == Key.None)
             {
@@ -58,9 +59,14 @@ namespace MemeBox.ViewModels
 
             if (sound == null)
             {
-                if (settingsStore.Settings.HotKey.Key == KeyToBind.Key && settingsStore.Settings.HotKey.Modifiers == KeyToBind.Modifiers)
+                if (settingsStore.Settings.PauseButtonHotKey.Key == KeyToBind.Key && settingsStore.Settings.PauseButtonHotKey.Modifiers == KeyToBind.Modifiers)
                 {
-                    MessageBox.Show($"This key has already been bound to the stop button, please choose another key");
+                    MessageBox.Show($"This key has already been bound to the pause button, please choose another key");
+                    return;
+                }
+                else if ((settingsStore.Settings.ResumeButtonHotKey.Key == KeyToBind.Key && settingsStore.Settings.ResumeButtonHotKey.Modifiers == KeyToBind.Modifiers))
+                {
+                    MessageBox.Show($"This key has already been bound to the resume button, please choose another key");
                     return;
                 }
                 soundToUpdate.HotKey = KeyToBind;
@@ -82,7 +88,7 @@ namespace MemeBox.ViewModels
             }
         }
 
-        public void SetBindStopButton()
+        public void SetBindPlaybackButton(string buttonName)
         {
             if (KeyToBind.Key == Key.None)
             {
@@ -102,7 +108,24 @@ namespace MemeBox.ViewModels
                 return;
             }
 
-            settingsStore.Settings.HotKey = KeyToBind;
+            if (buttonName?.StartsWith("Pause") ?? false)
+            {
+                if ((settingsStore.Settings.ResumeButtonHotKey.Key == KeyToBind.Key && settingsStore.Settings.ResumeButtonHotKey.Modifiers == KeyToBind.Modifiers))
+                {
+                    MessageBox.Show($"This key has already been bound to the resume button, please choose another key");
+                    return;
+                }
+                settingsStore.Settings.PauseButtonHotKey = KeyToBind;
+            }
+            else if (buttonName?.StartsWith("Resume") ?? false)
+            {
+                if (settingsStore.Settings.PauseButtonHotKey.Key == KeyToBind.Key && settingsStore.Settings.PauseButtonHotKey.Modifiers == KeyToBind.Modifiers)
+                {
+                    MessageBox.Show($"This key has already been bound to the pause button, please choose another key");
+                    return;
+                }
+                settingsStore.Settings.ResumeButtonHotKey = KeyToBind;
+            }
 
             try
             {
@@ -118,7 +141,7 @@ namespace MemeBox.ViewModels
         [RelayCommand]
         private void ClearBind()
         {
-            if (isStopButton == false && soundToUpdate.HotKey.Key != Key.None)
+            if (buttonName == string.Empty && soundToUpdate.HotKey.Key != Key.None)
             {
                 if (MessageBox.Show($"Do you truly wish to clear {soundToUpdate.Name}'s bound key ?",
                     "Clear Keybind",
@@ -129,21 +152,23 @@ namespace MemeBox.ViewModels
                     view.Close();
                 }
             }
-            else if (isStopButton == true && settingsStore.Settings.HotKey.Key != Key.None)
+            else if (buttonName != string.Empty && settingsStore.Settings.PauseButtonHotKey.Key != Key.None)
             {
                 if (MessageBox.Show($"Do you truly wish to clear the stop button's bound key ?",
                                        "Clear Keybind", MessageBoxButton.YesNo,
                                        MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    settingsStore.Settings.HotKey = new HotKey(Key.None, ModifierKeys.None);
-                    try
-                    {
-                        XmlBroker.XmlDataWriter(settingsStore.Settings, settingsStore.SettingsFilePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error : " + ex.ToString());
-                    }
+                    settingsStore.Settings.PauseButtonHotKey = new HotKey(Key.None, ModifierKeys.None);
+                    view.Close();
+                }
+            }
+            else if (buttonName != string.Empty && settingsStore.Settings.ResumeButtonHotKey.Key != Key.None)
+            {
+                if (MessageBox.Show($"Do you truly wish to clear the resume button's bound key ?",
+                                                          "Clear Keybind", MessageBoxButton.YesNo,
+                                                                                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    settingsStore.Settings.ResumeButtonHotKey = new HotKey(Key.None, ModifierKeys.None);
                     view.Close();
                 }
             }
