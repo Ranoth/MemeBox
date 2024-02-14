@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using MemeBox.Messages;
 using MemeBox.Stores;
 using System.Windows.Input;
 using WPFUtilsBox.HotKeyer;

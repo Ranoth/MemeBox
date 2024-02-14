@@ -11,8 +11,6 @@ using MessageBoxImage = System.Windows.Forms.MessageBoxIcon;
 using MessageBoxButton = System.Windows.Forms.MessageBoxButtons;
 using MessageBoxResult = System.Windows.Forms.DialogResult;
 using AutoUpdaterDotNET;
-using CommunityToolkit.Mvvm.Messaging;
-using MemeBox.Messages;
 using NAudio.Wave;
 
 namespace MemeBox.ViewModels
@@ -68,11 +66,11 @@ namespace MemeBox.ViewModels
                 RemoveAllSoundsCommand.NotifyCanExecuteChanged();
             };
 
-            WeakReferenceMessenger.Default.Register<PlaybackStateChangedMessage>(this, (r, m) =>
+            playersStore.PlaybackStateChanged += () =>
             {
                 ResumeSoundCommand.NotifyCanExecuteChanged();
                 PausePlaybackCommand.NotifyCanExecuteChanged();
-            });
+            };
 
             InitCommands();
         }

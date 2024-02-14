@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
-using MemeBox.Messages;
 using MemeBox.Models;
 using NAudio.Wave;
 using System;
@@ -13,6 +12,7 @@ namespace MemeBox.Stores
         private SettingsStore settingsStore;
         public WaveOut MainPlayer { get; set; } = new();
         public WaveOut AuxPlayer { get; set; } = new();
+        public event Action? PlaybackStateChanged;
         public PlayersStore(SettingsStore settingsStore)
         {
             this.settingsStore = settingsStore;
@@ -55,28 +55,28 @@ namespace MemeBox.Stores
         {
             MainPlayer.Play();
             AuxPlayer.Play();
-            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
+            PlaybackStateChanged?.Invoke();
         }
 
         public void PausePlayers()
         {
             MainPlayer.Pause();
             AuxPlayer.Pause();
-            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
+            PlaybackStateChanged?.Invoke();
         }
 
         public void ResumePlayers()
         {
             MainPlayer.Resume();
             AuxPlayer.Resume();
-            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
+            PlaybackStateChanged?.Invoke();
         }
 
         public void StopPlayers()
         {
             MainPlayer.Stop();
             AuxPlayer.Stop();
-            WeakReferenceMessenger.Default.Send(new PlaybackStateChangedMessage(MainPlayer.PlaybackState));
+            PlaybackStateChanged?.Invoke();
         }
     }
 }
