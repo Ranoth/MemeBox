@@ -73,7 +73,7 @@ namespace MemeBox.ViewModels
         {
             var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playersStore.MainPlayerAudioFileReader.FileName));
 
-            sound.SetProgress(settingsStore, pos);
+            sound.Progress = pos;
             Position = pos;
 
             playersStore.AuxPlayerAudioFileReader.Position = (playersStore.AuxPlayerAudioFileReader.Length / 1000) * pos;
@@ -98,6 +98,7 @@ namespace MemeBox.ViewModels
                 IsPlaying = true;
                 while (IsPlaying)
                 {
+                    settingsStore.UserSounds.RaiseListChangedEvents = false;
                     if (playersStore.MainPlayerAudioFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
                     {
                         // ToDo: Find a fluid way to update the progress bar
@@ -106,16 +107,17 @@ namespace MemeBox.ViewModels
                         var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playersStore.MainPlayerAudioFileReader.FileName));
                         if (sound != null && sound.Progress != progress && progress <= 990)
                         {
-                            sound.SetProgress(settingsStore, progress);
+                            sound.Progress = progress;
                             Position = sound.Progress;
                         }
                         if (progress >= 990 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing)
                         {
-                            sound.SetProgress(settingsStore, 0);
+                            sound.Progress = 0;
                             Position = sound.Progress;
                             IsPlaying = false;
                         }
                     }
+                    settingsStore.UserSounds.RaiseListChangedEvents = false;
                     Thread.Sleep(50);
                 }
             });
@@ -150,7 +152,7 @@ namespace MemeBox.ViewModels
             {
                 var _ = Sounds.Where(x => x.Progress > 0);
 
-                foreach (var item in _) item.SetProgress(settingsStore, 0);
+                foreach (var item in _) item.Progress = 0;
 
                 playersStore.PausePlayers();
                 playersStore.InitPlayers(sound);

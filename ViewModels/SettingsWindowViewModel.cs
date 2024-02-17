@@ -84,7 +84,7 @@ namespace MemeBox.ViewModels
         {
             playersStore.StopPlayers();
             var sound = settingsStore.UserSounds.FirstOrDefault(x => x.Progress != 0);
-            if (sound != null) sound.SetProgress(settingsStore, 0);
+            if (sound != null) sound.Progress = 0;
         }
     }
 }
