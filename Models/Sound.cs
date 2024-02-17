@@ -42,7 +42,7 @@ namespace MemeBox.Models
             }
         }
 
-        //public void Progress = pos(SettingsStore settingsStore, int progress)
+        //public void Progress = (SettingsStore settingsStore, int progress)
         //{
         //    settingsStore.UserSounds.RaiseListChangedEvents = false;
         //    Progress = progress;
