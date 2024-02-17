@@ -42,12 +42,12 @@ namespace MemeBox.Models
             }
         }
 
-        public void SetProgress(SettingsStore settingsStore, int progress)
-        {
-            settingsStore.UserSounds.RaiseListChangedEvents = false;
-            Progress = progress;
-            settingsStore.UserSounds.RaiseListChangedEvents = true;
-        }
+        //public void Progress = pos(SettingsStore settingsStore, int progress)
+        //{
+        //    settingsStore.UserSounds.RaiseListChangedEvents = false;
+        //    Progress = progress;
+        //    settingsStore.UserSounds.RaiseListChangedEvents = true;
+        //}
 
         private void SetNameBind()
         {
