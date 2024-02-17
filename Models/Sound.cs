@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MemeBox.Stores;
+using NAudio.Wave;
 using System.Windows.Input;
 using WPFUtilsBox.HotKeyer;
 

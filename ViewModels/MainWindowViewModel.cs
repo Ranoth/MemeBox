@@ -103,7 +103,11 @@ namespace MemeBox.ViewModels
         private bool CanOpenSettingsWindow() => SettingsWindow == null;
 
         [RelayCommand(CanExecute = nameof(CanExecutePausePlayback))]
-        private void PausePlayback() => playersStore.PausePlayers();
+        private void PausePlayback()
+        {
+            playersStore.PausePlayers();
+            playersStore.WasPaused = true;
+        }
         public void OnKeyDownGlobal(object sender, GlobalKeyboardHookEventArgs e)
         {
             if (!e.KeyboardState.HasFlag(GlobalKeyboardHook.KeyboardState.KeyUp))
@@ -238,7 +242,7 @@ namespace MemeBox.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CanExecuteResumePlayback))]
-        private void ResumeSound() => playersStore.ResumePlayers();
+        private void ResumeSound() => playersStore.PlayPlayers();
 
         private bool CanExecuteResumePlayback()
         {

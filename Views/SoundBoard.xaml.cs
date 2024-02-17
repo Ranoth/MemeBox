@@ -27,5 +27,17 @@ namespace MemeBox.Views
                 mainPanelBorder.Margin = new Thickness();
             }
         }
+
+        private void PositionSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            var viewModel = DataContext as ViewModels.SoundBoardViewModel;
+            viewModel.PositionChangedCommand.Execute((int)PositionSlider.Value);
+        }
+
+        private void PositionSlider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            var viewModel = DataContext as ViewModels.SoundBoardViewModel;
+            viewModel.PositionChangingCommand.Execute(null);
+        }
     }
 }

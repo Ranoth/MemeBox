@@ -31,6 +31,10 @@ namespace MemeBox.ViewModels
         private BindingList<Sound> displayedSounds;
         [ObservableProperty]
         private bool allowDrop = true;
+        [ObservableProperty]
+        private int position = 0;
+        [ObservableProperty]
+        private bool isPlaying = false;
 
         public bool KeyBindChanging { get; set; } = false;
         public PlaySoundCommand PlaySoundCommand { get; set; }
@@ -46,8 +50,6 @@ namespace MemeBox.ViewModels
             }
         }
 
-        public AudioFileReader PlayingSoundFileReader { get; private set; }
-
         public SoundBoardViewModel(SettingsStore settingsStore, PlayersStore playersStore)
         {
             this.settingsStore = settingsStore;
@@ -58,6 +60,26 @@ namespace MemeBox.ViewModels
             DisplayedSounds = new(Sounds);
 
             PlaySoundCommand = new PlaySoundCommand(PlaySound, CanPlaySound);
+        }
+
+        [RelayCommand]
+        private void PositionChanging()
+        {
+            playersStore.PausePlayers();
+        }
+
+        [RelayCommand]
+        private void PositionChanged(int pos)
+        {
+            var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playersStore.MainPlayerAudioFileReader.FileName));
+
+            sound.SetProgress(settingsStore, pos);
+            Position = pos;
+
+            playersStore.AuxPlayerAudioFileReader.Position = (playersStore.AuxPlayerAudioFileReader.Length / 1000) * pos;
+            playersStore.MainPlayerAudioFileReader.Position = (playersStore.MainPlayerAudioFileReader.Length / 1000) * pos;
+
+            if (!playersStore.WasPaused) playersStore.PlayPlayers();
         }
 
         [RelayCommand]
@@ -73,18 +95,25 @@ namespace MemeBox.ViewModels
             await Task.Run(() =>
             {
                 int progress = 0;
-                while (progress <= 1000)
+                IsPlaying = true;
+                while (IsPlaying)
                 {
-                    if (PlayingSoundFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
+                    if (playersStore.MainPlayerAudioFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        progress = (int)(playersStore.MainPlayer?.GetPositionTimeSpan().TotalSeconds / PlayingSoundFileReader.TotalTime.TotalSeconds * 1000);
+                        // ToDo: Find a fluid way to update the progress bar
+                        progress = (int)(playersStore.MainPlayerAudioFileReader.CurrentTime / playersStore.MainPlayerAudioFileReader.TotalTime * 1000);
 
-                        var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(PlayingSoundFileReader.FileName));
-                        if (sound != null && sound.Progress != progress && progress <= 1000) sound.SetProgress(settingsStore, progress);
-
-                        if (progress >= 1000 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing)
+                        var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playersStore.MainPlayerAudioFileReader.FileName));
+                        if (sound != null && sound.Progress != progress && progress <= 990)
+                        {
+                            sound.SetProgress(settingsStore, progress);
+                            Position = sound.Progress;
+                        }
+                        if (progress >= 990 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing)
                         {
                             sound.SetProgress(settingsStore, 0);
+                            Position = sound.Progress;
+                            IsPlaying = false;
                         }
                     }
                     Thread.Sleep(50);
@@ -119,9 +148,7 @@ namespace MemeBox.ViewModels
 
             try
             {
-                PlayingSoundFileReader = new AudioFileReader(sound.Path);
-
-                var _ = Sounds.Where(x => x.Name != Path.GetFileNameWithoutExtension(PlayingSoundFileReader.FileName));
+                var _ = Sounds.Where(x => x.Progress > 0);
 
                 foreach (var item in _) item.SetProgress(settingsStore, 0);
 

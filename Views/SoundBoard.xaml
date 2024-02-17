@@ -37,6 +37,9 @@
                     <Image Source="/Images/searchIcon.png" Height="14"/>
                     <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="2,0,0,0" ToolTip="Search for a sound"/>
                 </StackPanel>
+                <Separator/>
+                <Slider Name="PositionSlider" Width="200" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1000" ToolTip="Position"
+                        Thumb.DragCompleted="PositionSlider_DragCompleted" Thumb.DragStarted="PositionSlider_DragStarted" IsEnabled="{Binding IsPlaying}"/>
             </ToolBar>
         </ToolBarTray>
 
@@ -46,7 +49,7 @@
                     <i:InvokeCommandAction Command="{Binding DropFileCommand}" PassEventArgsToCommand="True"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            
+
             <ItemsControl ItemsSource="{Binding DisplayedSounds}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

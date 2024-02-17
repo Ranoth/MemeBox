@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using MemeBox.Models;
+using NAudio.Utils;
 using NAudio.Wave;
 using System;
 using WPFUtilsBox.EasyXml;
@@ -12,7 +13,10 @@ namespace MemeBox.Stores
         private SettingsStore settingsStore;
         public WaveOut MainPlayer { get; set; } = new();
         public WaveOut AuxPlayer { get; set; } = new();
+        public AudioFileReader? MainPlayerAudioFileReader;
+        public AudioFileReader? AuxPlayerAudioFileReader;
         public event Action? PlaybackStateChanged;
+        public bool WasPaused { get; set; } = false;
         public PlayersStore(SettingsStore settingsStore)
         {
             this.settingsStore = settingsStore;
@@ -47,14 +51,30 @@ namespace MemeBox.Stores
 
         public void InitPlayers(Sound sound)
         {
-            if (MainPlayer.DeviceNumber != -1) MainPlayer.Init(new WaveChannel32(new AudioFileReader(sound.Path)));
-            if (AuxPlayer.DeviceNumber != -1) AuxPlayer.Init(new WaveChannel32(new AudioFileReader(sound.Path)));
+            if (MainPlayer.DeviceNumber != -1)
+            {
+                if (MainPlayerAudioFileReader != null) MainPlayerAudioFileReader.Dispose();
+                MainPlayerAudioFileReader = new AudioFileReader(sound.Path);
+                MainPlayer.Init(new WaveChannel32(MainPlayerAudioFileReader));
+            }
+            if (AuxPlayer.DeviceNumber != -1)
+            {
+                if (AuxPlayerAudioFileReader != null) AuxPlayerAudioFileReader.Dispose();
+                AuxPlayerAudioFileReader = new AudioFileReader(sound.Path);
+                AuxPlayer.Init(new WaveChannel32(AuxPlayerAudioFileReader));
+            }
+        }
+
+        public TimeSpan GetMainPlayerPosition()
+        {
+            return MainPlayer.GetPositionTimeSpan();
         }
 
         public void PlayPlayers()
         {
             MainPlayer.Play();
             AuxPlayer.Play();
+            WasPaused = false;
             PlaybackStateChanged?.Invoke();
         }
 
@@ -65,17 +85,13 @@ namespace MemeBox.Stores
             PlaybackStateChanged?.Invoke();
         }
 
-        public void ResumePlayers()
-        {
-            MainPlayer.Resume();
-            AuxPlayer.Resume();
-            PlaybackStateChanged?.Invoke();
-        }
-
         public void StopPlayers()
         {
             MainPlayer.Stop();
             AuxPlayer.Stop();
+            WasPaused = false;
+            MainPlayerAudioFileReader?.Dispose();
+            AuxPlayerAudioFileReader?.Dispose();
             PlaybackStateChanged?.Invoke();
         }
     }
