@@ -1,6 +1,6 @@
 {
   "name": "MemeBox",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "main": "index.js",
   "repository": "https://github.com/Ranoth/MemeBox.git",
   "author": "Ranoth <47944849+Ranoth@users.noreply.github.com>",
@@ -12,7 +12,7 @@
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll && node includeChangelogInRelease.js && timeout /T 5 /NOBREAK && gren release --override"
+    "release": "standard-version --commitAll && includeChangelogInRelease.js && gren release --override"
   },
   "devDependencies": {
     "@octokit/rest": "^20.1.0",
