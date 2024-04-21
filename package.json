@@ -7,11 +7,12 @@
   "license": "MIT",
   "standard-version": {
     "scripts": {
-      "postbump": "node update-version.js && git add app.xml MemeBox.csproj"
+      "postbump": "node update-version.js && git add app.xml MemeBox.csproj",
+      "posttag": "git push --follow-tags origin master && gren release --override"
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll && git push --follow-tags origin master && gren release --override"
+    "release": "standard-version --commitAll"
   },
   "devDependencies": {
     "standard-version": "^9.5.0",
