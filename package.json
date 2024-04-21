@@ -4,5 +4,11 @@
   "main": "index.js",
   "repository": "https://github.com/Ranoth/MemeBox.git",
   "author": "Ranoth <47944849+Ranoth@users.noreply.github.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
 }
