@@ -75,7 +75,7 @@ body:
     validations:
       required: false
 
-  - type: "input"
+  - type: "textarea"
     id: "bug-screenshots"
     attributes:
       label: "Screenshots"
