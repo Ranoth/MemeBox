@@ -1,6 +1,6 @@
 {
   "name": "MemeBox",
-  "version": "1.8.20",
+  "version": "1.8.21",
   "main": "index.js",
   "repository": "https://github.com/Ranoth/MemeBox.git",
   "author": "Ranoth <47944849+Ranoth@users.noreply.github.com>",
@@ -8,7 +8,7 @@
   "standard-version": {
     "scripts": {
       "postbump": "node update-version.js && git add app.xml MemeBox.csproj",
-      "posttag": "git push --follow-tags origin master && node includeChangelogInRelease.js && dotenv -- gren release --token=%GITHUB_TOKEN% --override"
+      "posttag": "git push --follow-tags origin master && node includeChangelogInRelease.js && dotenv gren release --token=$GITHUB_TOKEN --override"
     }
   },
   "scripts": {
