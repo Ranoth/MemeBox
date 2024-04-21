@@ -7,11 +7,12 @@
   "license": "MIT",
   "standard-version": {
     "scripts": {
-      "postbump": "node update-version.js"
+      "postbump": "node update-version.js",
+      "posttag": "gren release --override"
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll && gren release --override"
+    "release": "standard-version --commitAll"
   },
   "devDependencies": {
     "standard-version": "^9.5.0",
