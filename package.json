@@ -8,11 +8,11 @@
   "standard-version": {
     "scripts": {
       "postbump": "node update-version.js && git add app.xml MemeBox.csproj",
-      "posttag": "git push --follow-tags origin master"
+      "posttag": "git push --follow-tags origin master && node includeChangelogInRelease.js && gren release --override"
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll && node includeChangelogInRelease.js && gren release --override"
+    "release": "standard-version --commitAll"
   },
   "devDependencies": {
     "@octokit/rest": "^20.1.0",

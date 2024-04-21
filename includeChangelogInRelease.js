@@ -27,7 +27,7 @@ lines.forEach((line) => {
 if (currentVersion.length > 0) {
 	versions.push(currentVersion.join("\n"));
 }
-console.log(versions);
+// console.log(versions);
 
 // Extract and sort the version numbers
 const sortedVersions = versions
