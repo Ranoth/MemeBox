@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.10](https://github.com/Ranoth/MemeBox/compare/v1.8.9...v1.8.10) (2024-04-21)
+
+
+### Bug Fixes
+
+* daz ([fe513d8](https://github.com/Ranoth/MemeBox/commit/fe513d85686739d29211be8bb962b821039b468b))
+
 ### [1.8.9](https://github.com/Ranoth/MemeBox/compare/v1.8.8...v1.8.9) (2024-04-21)
 
 
