@@ -8,7 +8,7 @@
   "standard-version": {
     "scripts": {
       "postbump": "node update-version.js && git add app.xml MemeBox.csproj",
-      "posttag": "git push --follow-tags origin master && node includeChangelogInRelease.js && gren release --token=$GITHUB_TOKEN --override"
+      "posttag": "dotenv -- git push --follow-tags origin master && node includeChangelogInRelease.js && gren release --token=$GITHUB_TOKEN --override"
     }
   },
   "scripts": {
@@ -17,6 +17,7 @@
   "devDependencies": {
     "@octokit/rest": "^20.1.0",
     "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.1",
     "semver": "^7.6.0",
     "standard-version": "^9.5.0",
     "xml2js": "^0.6.2"
