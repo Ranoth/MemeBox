@@ -8,11 +8,11 @@
   "standard-version": {
     "scripts": {
       "postbump": "node update-version.js && git add app.xml MemeBox.csproj",
-      "posttag": "git push --follow-tags origin master && gren release --override"
+      "posttag": "git push --follow-tags origin master"
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll"
+    "release": "standard-version --commitAll && gren release --override"
   },
   "devDependencies": {
     "standard-version": "^9.5.0",
