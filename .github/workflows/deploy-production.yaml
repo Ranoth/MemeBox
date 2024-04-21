@@ -2,9 +2,14 @@
 name: Deploy To Production
 
 on:
+  # Use only for faster testing
+  # push:
+  #   branches:
+  #     - master
+  
   push:
-    branches:
-      - master
+    tags:
+      - "**"
 
   pull_request:
     branches:
