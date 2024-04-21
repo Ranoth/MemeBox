@@ -2,6 +2,6 @@
 <item>
   <version>1.4.0.0</version>
   <url>https://getmemebox.ranoth.com/download/MemeBox.zip</url>
-  <changelog>https://github.com/Ranoth/MemeBox/blob/master/CHANGELOG.md</changelog>
+  <changelog>https://github.com/Ranoth/MemeBox/releases/latest</changelog>
   <mandatory>true</mandatory>
 </item>
