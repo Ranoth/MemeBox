@@ -2,6 +2,9 @@ const fs = require("fs");
 const { Octokit } = require("@octokit/rest");
 const semver = require("semver");
 const { version } = require("os");
+require("dotenv").config();
+
+const token = process.env.GITHUB_TOKEN;
 
 // Read the CHANGELOG.md file
 const changelog = fs.readFileSync("CHANGELOG.md", "utf8");
@@ -50,7 +53,7 @@ const releaseNotes = versions.find((version) =>
 
 // Initialize the Octokit client
 const octokit = new Octokit({
-	auth: process.env.GREN_GITHUB_TOKEN, // You need to set this environment variable
+	auth: token, // You need to set this environment variable
 });
 
 // Check if the release already exists

@@ -368,3 +368,6 @@ FodyWeavers.xsd
 *.spc
 *.sgui
 *.bat
+
+# dotenv
+.env
