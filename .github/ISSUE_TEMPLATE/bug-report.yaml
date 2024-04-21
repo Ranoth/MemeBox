@@ -16,7 +16,8 @@ body:
       label: "Summary"
       description: "A clear and concise description of what the bug is."
       placeholder: "I'm always frustrated when..."
-      required: true
+    validations:
+        required: true
   
   - type: "input"
     id: "bug-steps"
@@ -24,6 +25,7 @@ body:
       label: "Steps to Reproduce"
       description: "Steps to reproduce the behavior:"
       placeholder: "1. Go to '...' 2. Click on '....' 3. Scroll down to '....' 4. See error"
+    validations:
       required: true
 
   - type: "input"
@@ -32,6 +34,7 @@ body:
       label: "Expected Behavior"
       description: "A clear and concise description of what you expected to happen."
       placeholder: "I expected to see..."
+    validations:
       required: true
 
   - type: "input"
@@ -40,6 +43,7 @@ body:
       label: "Actual Behavior"
       description: "A clear and concise description of what actually happened."
       placeholder: "Instead I saw..."
+    validations:
       required: true
 
   - type: "input"
@@ -48,6 +52,7 @@ body:
       label: "Environment"
       description: "Please provide details about the environment you experienced the bug in."
       placeholder: "OS, Browser, Version..."
+    validations:
       required: false
 
   - type: "input"
@@ -58,6 +63,7 @@ body:
         "Add any other context about the problem here. 
         It could be helpful to include your settings.xml and UserSounds.xml files to help me reproduce the issue; you can find these right next to MemeBox.exe."
       placeholder: "I've also noticed that..."
+    validations:
       required: false
 
   - type: "input"
@@ -66,4 +72,5 @@ body:
       label: "Screenshots"
       description: "If applicable, add screenshots to help explain your problem."
       placeholder: "Add screenshots here..."
+    validations:
       required: false
