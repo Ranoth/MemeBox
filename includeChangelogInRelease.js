@@ -11,15 +11,18 @@ const versions = changelog.split("\n### ").slice(1);
 
 // Extract and sort the version numbers
 const sortedVersions = versions
-	.map((version) => {
-		const match = version.match(/\d+\.\d+\.\d+/);
-		return match ? match[0] : null;
-	})
-	.filter(Boolean) // remove null values
-	.sort(semver.rcompare);
+    .map((version) => {
+        const match = version.match(/\[(\d+\.\d+\.\d+)\]/);
+        return match ? match[1] : null;
+    })
+    .filter(Boolean) // remove null values
+    .sort(semver.rcompare);
 
 // Take the latest version number
 const versionNumber = sortedVersions[0];
+
+// Set the body of the release
+// body: versions.find((version) => version.startsWith(`### [${versionNumber}]`)),
 
 // Initialize the Octokit client
 const octokit = new Octokit({
@@ -45,7 +48,7 @@ octokit.repos
 					repo: "MemeBox",
 					tag_name: `v${versionNumber}`,
 					name: `v${versionNumber}`,
-					body: versions.find((version) => version.startsWith(versionNumber)),
+					body: versions.find((version) => version.startsWith(`### [${versionNumber}]`)),
 				})
 				.then(() => {
 					console.log(`Created release v${versionNumber}`);
