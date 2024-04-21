@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/Ranoth/MemeBox/compare/v1.4.0...v1.4.1) (2024-04-21)
+
+
+### Bug Fixes
+
+* point changelog url to latest release instead of CHANGELOG.md ([fa08d93](https://github.com/Ranoth/MemeBox/commit/fa08d93a78da24cd370419ab885a09ff95a2f5b5))
+
 ## 1.4.0 (2024-04-21)
 
 
