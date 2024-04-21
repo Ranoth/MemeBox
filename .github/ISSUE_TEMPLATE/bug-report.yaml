@@ -10,7 +10,7 @@ body:
       value: |
         ## Thanks for taking the time to report a bug!
 
-  - type: "input"
+  - type: "textarea"
     id: "bug-summary"
     attributes:
       label: "Summary"
@@ -19,7 +19,7 @@ body:
     validations:
         required: true
   
-  - type: "input"
+  - type: "textarea"
     id: "bug-steps"
     attributes:
       label: "Steps to Reproduce"
@@ -28,7 +28,7 @@ body:
     validations:
       required: true
 
-  - type: "input"
+  - type: "textarea"
     id: "bug-expected"
     attributes:
       label: "Expected Behavior"
@@ -37,7 +37,7 @@ body:
     validations:
       required: true
 
-  - type: "input"
+  - type: "textarea"
     id: "bug-actual"
     attributes:
       label: "Actual Behavior"
@@ -46,7 +46,7 @@ body:
     validations:
       required: true
 
-  - type: "input"
+  - type: "textarea"
     id: "bug-environment"
     attributes:
       label: "Environment"
@@ -55,7 +55,7 @@ body:
     validations:
       required: false
 
-  - type: "input"
+  - type: "textarea"
     id: "bug-additional"
     attributes:
       label: "Additional Information"
@@ -66,7 +66,7 @@ body:
     validations:
       required: false
 
-  - type: "input"
+  - type: "textarea"
     id: "bug-screenshots"
     attributes:
       label: "Screenshots"
