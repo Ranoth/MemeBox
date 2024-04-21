@@ -31,4 +31,4 @@ fs.readFile(xmlPath, 'utf8', function(err, data) {
 });
 
 // Stage changes
-execSync('git add -A');
+execSync('git add *');
