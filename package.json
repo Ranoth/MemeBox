@@ -5,10 +5,16 @@
   "repository": "https://github.com/Ranoth/MemeBox.git",
   "author": "Ranoth <47944849+Ranoth@users.noreply.github.com>",
   "license": "MIT",
+  "standard-version": {
+    "scripts": {
+      "postbump": "node update-version.js"
+    }
+  },
   "scripts": {
     "release": "standard-version"
   },
   "devDependencies": {
-    "standard-version": "^9.5.0"
+    "standard-version": "^9.5.0",
+    "xml2js": "^0.6.2"
   }
 }
