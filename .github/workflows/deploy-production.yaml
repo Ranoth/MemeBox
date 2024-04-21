@@ -6,14 +6,18 @@ on:
   # push:
   #   branches:
   #     - master
-  
-  push:
-    tags:
-      - "**"
 
-  pull_request:
-    branches:
-      - master
+  release:
+    types:
+      - released
+  
+  # push:
+  #   tags:
+  #     - "**"
+
+  # pull_request:
+  #   branches:
+  #     - master
 
   workflow_dispatch:
 
