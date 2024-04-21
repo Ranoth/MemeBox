@@ -7,11 +7,11 @@
   "license": "MIT",
   "standard-version": {
     "scripts": {
-      "precommit": "node update-version.js"
+      "postbumb": "node update-version.js"
     }
   },
   "scripts": {
-    "release": "standard-version"
+    "release": "standard-version --commitAll"
   },
   "devDependencies": {
     "standard-version": "^9.5.0",
