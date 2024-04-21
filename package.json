@@ -1,13 +1,13 @@
 {
   "name": "MemeBox",
-  "version": "1.5.0",
+  "version": "1.4.4",
   "main": "index.js",
   "repository": "https://github.com/Ranoth/MemeBox.git",
   "author": "Ranoth <47944849+Ranoth@users.noreply.github.com>",
   "license": "MIT",
   "standard-version": {
     "scripts": {
-      "postbump": "node update-version.js"
+      "precommit": "node update-version.js"
     }
   },
   "scripts": {
