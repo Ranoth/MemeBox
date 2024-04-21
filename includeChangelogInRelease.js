@@ -53,7 +53,7 @@ const releaseNotes = versions.find((version) =>
 
 // Initialize the Octokit client
 const octokit = new Octokit({
-	auth: token, // You need to set this environment variable
+	auth: token,
 });
 
 // Check if the release already exists
