@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.23](https://github.com/Ranoth/MemeBox/compare/v1.8.22...v1.8.23) (2024-04-21)
+
+
+### Bug Fixes
+
+* remove dotenv-cli ([bbe9a28](https://github.com/Ranoth/MemeBox/commit/bbe9a28e759d0d4b75681f26d008b2202f6ed094))
+
 ### [1.8.22](https://github.com/Ranoth/MemeBox/compare/v1.8.21...v1.8.22) (2024-04-21)
 
 ### [1.8.21](https://github.com/Ranoth/MemeBox/compare/v1.8.20...v1.8.21) (2024-04-21)
