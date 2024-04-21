@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/Ranoth/MemeBox/compare/v1.6.0...v1.6.1) (2024-04-21)
+
+
+### Bug Fixes
+
+* auto release ([47f8f3a](https://github.com/Ranoth/MemeBox/commit/47f8f3a2f59cb02ef449a69687bb96915d21b78b))
+
 ## [1.6.0](https://github.com/Ranoth/MemeBox/compare/v1.5.3...v1.6.0) (2024-04-21)
 
 
