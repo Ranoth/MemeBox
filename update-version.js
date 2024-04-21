@@ -1,3 +1,4 @@
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
@@ -28,3 +29,6 @@ fs.readFile(xmlPath, 'utf8', function(err, data) {
         fs.writeFileSync(xmlPath, xml, 'utf8');
     });
 });
+
+// Stage changes
+execSync('git add -A');
