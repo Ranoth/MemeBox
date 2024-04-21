@@ -11,12 +11,12 @@ const versions = changelog.split("\n### ").slice(1);
 
 // Extract and sort the version numbers
 const sortedVersions = versions
-    .map((version) => {
-        const match = version.match(/\d+\.\d+\.\d+/);
-        return match ? match[0] : null;
-    })
-    .filter(Boolean) // remove null values
-    .sort(semver.rcompare);
+	.map((version) => {
+		const match = version.match(/\d+\.\d+\.\d+/);
+		return match ? match[0] : null;
+	})
+	.filter(Boolean) // remove null values
+	.sort(semver.rcompare);
 
 // Take the latest version number
 const versionNumber = sortedVersions[0];
@@ -33,14 +33,11 @@ octokit.repos
 		repo: "MemeBox",
 		tag: `v${versionNumber}`,
 	})
-	.then((response) => {
-		if (response.status === 404) {
-			throw new Error("Release not found");
-		}
+	.then(() => {
 		console.log(`Release v${versionNumber} already exists`);
 	})
 	.catch((error) => {
-		if (error.message === "Release not found") {
+		if (error.status === 404) {
 			// If the release doesn't exist, create it
 			octokit.repos
 				.createRelease({
