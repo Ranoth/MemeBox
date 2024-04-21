@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.12](https://github.com/Ranoth/MemeBox/compare/v1.8.11...v1.8.12) (2024-04-21)
+
+
+### Bug Fixes
+
+* auto tags timing ([eb73ba5](https://github.com/Ranoth/MemeBox/commit/eb73ba54a0ca848351d25af2d75afcfeb0ba5f3f))
+
 ### [1.8.11](https://github.com/Ranoth/MemeBox/compare/v1.8.10...v1.8.11) (2024-04-21)
 
 
