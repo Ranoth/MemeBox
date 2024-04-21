@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll && git push --tags && gren release --override"
+    "release": "standard-version --commitAll && git push && gren release --override"
   },
   "devDependencies": {
     "standard-version": "^9.5.0",
