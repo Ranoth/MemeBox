@@ -1,0 +1,69 @@
+name: Bug Report
+description: Create a report to help us improve
+title : "[BUG] "
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: "markdown"
+    attributes: 
+      value: |
+        ## Thanks for taking the time to report a bug!
+
+  - type: "input"
+    id: "bug-summary"
+    attributes:
+      label: "Summary"
+      description: "A clear and concise description of what the bug is."
+      placeholder: "I'm always frustrated when..."
+      required: true
+  
+  - type: "input"
+    id: "bug-steps"
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Steps to reproduce the behavior:"
+      placeholder: "1. Go to '...' 2. Click on '....' 3. Scroll down to '....' 4. See error"
+      required: true
+
+  - type: "input"
+    id: "bug-expected"
+    attributes:
+      label: "Expected Behavior"
+      description: "A clear and concise description of what you expected to happen."
+      placeholder: "I expected to see..."
+      required: true
+
+  - type: "input"
+    id: "bug-actual"
+    attributes:
+      label: "Actual Behavior"
+      description: "A clear and concise description of what actually happened."
+      placeholder: "Instead I saw..."
+      required: true
+
+  - type: "input"
+    id: "bug-environment"
+    attributes:
+      label: "Environment"
+      description: "Please provide details about the environment you experienced the bug in."
+      placeholder: "OS, Browser, Version..."
+      required: false
+
+  - type: "input"
+    id: "bug-additional"
+    attributes:
+      label: "Additional Information"
+      description: |
+        "Add any other context about the problem here. 
+        It could be helpful to include your settings.xml and UserSounds.xml files to help me reproduce the issue; you can find these right next to MemeBox.exe."
+      placeholder: "I've also noticed that..."
+      required: false
+
+  - type: "input"
+    id: "bug-screenshots"
+    attributes:
+      label: "Screenshots"
+      description: "If applicable, add screenshots to help explain your problem."
+      placeholder: "Add screenshots here..."
+      required: false
