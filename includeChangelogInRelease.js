@@ -1,14 +1,18 @@
 const fs = require("fs");
 const { Octokit } = require("@octokit/rest");
+const semver = require('semver');
 
 // Read the CHANGELOG.md file
 const changelog = fs.readFileSync("CHANGELOG.md", "utf8");
 
-// Extract the section for the latest version
-const latestVersion = changelog.split("\n## ")[1];
+// Extract all version sections
+const versions = changelog.split("\n## ").slice(1);
 
-// Extract the version number from the latest version section
-const versionNumber = latestVersion.match(/\d+\.\d+\.\d+/)[0];
+// Extract and sort the version numbers
+const sortedVersions = versions.map(version => version.match(/\d+\.\d+\.\d+/)[0]).sort(semver.rcompare);
+
+// Take the latest version number
+const versionNumber = sortedVersions[0];
 
 // Initialize the Octokit client
 const octokit = new Octokit({
@@ -29,7 +33,7 @@ octokit.repos.getReleaseByTag({
         repo: "MemeBox",
         tag_name: `v${versionNumber}`,
         name: `v${versionNumber}`,
-        body: latestVersion,
+        body: versions.find(version => version.startsWith(versionNumber)),
     }).then(() => {
         console.log(`Created release v${versionNumber}`);
     }).catch((error) => {
