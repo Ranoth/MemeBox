@@ -12,7 +12,7 @@ const versionNumber = latestVersion.match(/\d+\.\d+\.\d+/)[0];
 
 // Initialize the Octokit client
 const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN, // You need to set this environment variable
+    auth: process.env.GREN_GITHUB_TOKEN, // You need to set this environment variable
 });
 
 // Check if the release already exists
