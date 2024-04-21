@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-issue-config.json": "file:///d%3A/Users/admin/Source/Repos/MemeBox/.github/ISSUE_TEMPLATE/config.yaml"
+    }
+}
