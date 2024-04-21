@@ -7,7 +7,7 @@
   "license": "MIT",
   "standard-version": {
     "scripts": {
-      "postbump": "node update-version.js"
+      "postbump": "node update-version.js && git add app.xml MemeBox.csproj"
     }
   },
   "scripts": {
