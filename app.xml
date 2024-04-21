@@ -3,5 +3,5 @@
   <version>1.6.3.0</version>
   <url>https://getmemebox.ranoth.com/download/MemeBox.zip</url>
   <changelog>https://github.com/Ranoth/MemeBox/releases/latest</changelog>
-  <mandatory>true</mandatory>
+  <mandatory>false</mandatory>
 </item>
