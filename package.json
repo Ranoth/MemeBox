@@ -1,6 +1,6 @@
 {
   "name": "MemeBox",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "main": "index.js",
   "repository": "https://github.com/Ranoth/MemeBox.git",
   "author": "Ranoth <47944849+Ranoth@users.noreply.github.com>",
@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll && gren release --override"
+    "release": "standard-version --commitAll && git push --tags && gren release --override"
   },
   "devDependencies": {
     "standard-version": "^9.5.0",
