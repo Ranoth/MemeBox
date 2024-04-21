@@ -1,17 +1,22 @@
 const fs = require("fs");
 const { Octokit } = require("@octokit/rest");
 const semver = require("semver");
+const { version } = require("os");
 
 // Read the CHANGELOG.md file
 const changelog = fs.readFileSync("CHANGELOG.md", "utf8");
 
 // Extract all version sections
-const versions = changelog.split("\n## ").slice(1);
+const versions = changelog.split("\n### ").slice(1);
 
 // Extract and sort the version numbers
 const sortedVersions = versions
-	.map((version) => version.match(/\d+\.\d+\.\d+/)[0])
-	.sort(semver.rcompare);
+    .map((version) => {
+        const match = version.match(/\d+\.\d+\.\d+/);
+        return match ? match[0] : null;
+    })
+    .filter(Boolean) // remove null values
+    .sort(semver.rcompare);
 
 // Take the latest version number
 const versionNumber = sortedVersions[0];
