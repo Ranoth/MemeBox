@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1](https://github.com/Ranoth/MemeBox/compare/v1.6.6...v1.7.1) (2024-04-21)
+
+
+### Bug Fixes
+
+* bdza ([2f0fb9e](https://github.com/Ranoth/MemeBox/commit/2f0fb9e387d3d5cca719af03bf0052140a2221d3))
+
 ### [1.6.6](https://github.com/Ranoth/MemeBox/compare/v1.6.5...v1.6.6) (2024-04-21)
 
 

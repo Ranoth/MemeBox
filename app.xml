@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <item>
-  <version>1.6.6.0</version>
+  <version>1.7.1.0</version>
   <url>https://getmemebox.ranoth.com/download/MemeBox.zip</url>
   <changelog>https://github.com/Ranoth/MemeBox/releases/latest</changelog>
   <mandatory>false</mandatory>
