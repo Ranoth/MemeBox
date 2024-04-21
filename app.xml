@@ -4,4 +4,5 @@
     <url>https://getmemebox.ranoth.com/download/MemeBox.zip</url>
     <changelog>https://github.com/Ranoth/MemeBox/blob/master/CHANGELOG.md</changelog>
     <mandatory>true</mandatory>
+    <mandatory>true</mandatory>
 </item>
