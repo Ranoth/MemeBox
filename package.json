@@ -12,7 +12,7 @@
     }
   },
   "scripts": {
-    "release": "standard-version --commitAll && node includeChangelogInRelease.js && gren release --override --data-source=commits"
+    "release": "standard-version --commitAll && node includeChangelogInRelease.js && gren release --override"
   },
   "devDependencies": {
     "@octokit/rest": "^20.1.0",
