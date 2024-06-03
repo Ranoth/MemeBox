@@ -73,7 +73,7 @@ namespace MemeBox.Stores
         public void PlayPlayers()
         {
             MainPlayer.Play();
-            AuxPlayer.Play();
+            if (settingsStore.Settings.SetOutAux != "None") AuxPlayer.Play();
             WasPaused = false;
             PlaybackStateChanged?.Invoke();
         }
@@ -81,17 +81,17 @@ namespace MemeBox.Stores
         public void PausePlayers()
         {
             MainPlayer.Pause();
-            AuxPlayer.Pause();
+            if (settingsStore.Settings.SetOutAux != "None") AuxPlayer.Pause();
             PlaybackStateChanged?.Invoke();
         }
 
         public void StopPlayers()
         {
             MainPlayer.Stop();
-            AuxPlayer.Stop();
+            if (settingsStore.Settings.SetOutAux != "None") AuxPlayer.Stop();
             WasPaused = false;
             MainPlayerAudioFileReader?.Dispose();
-            AuxPlayerAudioFileReader?.Dispose();
+            if (settingsStore.Settings.SetOutAux != "None") AuxPlayerAudioFileReader?.Dispose();
             PlaybackStateChanged?.Invoke();
         }
     }
