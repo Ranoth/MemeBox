@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.25](https://github.com/Ranoth/MemeBox/compare/v1.8.24...v1.8.25) (2024-06-03)
+
+
+### Bug Fixes
+
+* MemeBox crashing when Aux audio out isn't set. ([7712c6c](https://github.com/Ranoth/MemeBox/commit/7712c6c7c3cc404b6b54e670a20fa6f53387116e))
+
 ### [1.8.24](https://github.com/Ranoth/MemeBox/compare/v1.8.23...v1.8.24) (2024-04-21)
 
 ### [1.8.23](https://github.com/Ranoth/MemeBox/compare/v1.8.22...v1.8.23) (2024-04-21)
