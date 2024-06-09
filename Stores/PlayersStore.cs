@@ -94,5 +94,10 @@ namespace MemeBox.Stores
             if (settingsStore.Settings.SetOutAux != "None") AuxPlayerAudioFileReader?.Dispose();
             PlaybackStateChanged?.Invoke();
         }
+
+        public void InvokePlaybackStateChanged()
+        {
+            PlaybackStateChanged?.Invoke();
+        }
     }
 }

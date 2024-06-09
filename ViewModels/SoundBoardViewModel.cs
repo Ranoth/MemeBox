@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using MemeBox.Commands;
 using MemeBox.Models;
 using MemeBox.Stores;
@@ -326,6 +326,7 @@ namespace MemeBox.ViewModels
 
             var sound = new Sound { Name = Path.GetFileNameWithoutExtension(openFileDialog.SafeFileName), Path = openFileDialog.FileName };
             Sounds.Add(sound);
+            CanPlaySound(sound.Name);
         }
     }
 }

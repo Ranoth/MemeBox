@@ -1,4 +1,4 @@
-﻿using MemeBox.Models;
+using MemeBox.Models;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System.ComponentModel;
@@ -81,6 +81,11 @@ namespace MemeBox.Stores
             {
                 Settings = XmlBroker.XmlDataReader<Settings>(SettingsFilePath);
             }
+        }
+
+        public void InvokeSelectedPlayerChanged()
+        {
+            SelectedPlayerChanged?.Invoke();
         }
     }
 }
