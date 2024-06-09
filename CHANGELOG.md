@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.27](https://github.com/Ranoth/MemeBox/compare/v1.8.26...v1.8.27) (2024-06-09)
+
+
+### Bug Fixes
+
+* Loss of responsiveness while playing sounds ([6189177](https://github.com/Ranoth/MemeBox/commit/6189177451db3ba9fb7e127e992775994b8b75f9))
+
 ### [1.8.26](https://github.com/Ranoth/MemeBox/compare/v1.8.25...v1.8.26) (2024-06-09)
 
 
