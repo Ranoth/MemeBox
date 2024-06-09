@@ -17,6 +17,7 @@ using WPFUtilsBox.HotKeyer;
 using CommunityToolkit.Mvvm.ComponentModel;
 using NAudio.Utils;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace MemeBox.ViewModels
 {
@@ -90,9 +91,9 @@ namespace MemeBox.ViewModels
             Sounds.Add(sound);
             CanPlaySound(sound.Name);
         }
-        private async void UpdateProgress()
+        private void UpdateProgress()
         {
-            await Task.Run(() =>
+            Task.Run(async () =>
             {
                 int progress = 0;
                 IsPlaying = true;
@@ -100,7 +101,6 @@ namespace MemeBox.ViewModels
                 {
                     if (playersStore.MainPlayerAudioFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        // ToDo: Find a fluid way to update the progress bar
                         progress = (int)(playersStore.MainPlayerAudioFileReader.CurrentTime / playersStore.MainPlayerAudioFileReader.TotalTime * 1000);
 
                         var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playersStore.MainPlayerAudioFileReader.FileName));
@@ -109,23 +109,28 @@ namespace MemeBox.ViewModels
                             Position = sound.Progress;
                             Application.Current.Dispatcher.Invoke(() =>
                             {
+                                settingsStore.UserSounds.RaiseListChangedEvents = false;
                                 sound.Progress = progress;
+                                settingsStore.UserSounds.RaiseListChangedEvents = true;
                             });
                         }
                         if (progress >= 990 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing)
                         {
-                            Position = sound.Progress;
+                            Position = sound?.Progress ?? 0;
                             IsPlaying = false;
                             Application.Current.Dispatcher.Invoke(() =>
                             {
+                                settingsStore.UserSounds.RaiseListChangedEvents = false;
                                 sound.Progress = 0;
+                                settingsStore.UserSounds.RaiseListChangedEvents = true;
+
                             });
                         }
                     }
-                    Thread.Sleep(50);
+                    await Task.Delay(10);
                 }
+                playersStore.StopPlayers();
             });
-            playersStore.StopPlayers();
         }
 
         private void SearchSounds(string? target)

@@ -39,6 +39,7 @@ namespace MemeBox.Models
             set
             {
                 SetProperty(ref progress, value);
+                //progress = value;
             }
         }
 
