@@ -10,7 +10,7 @@ on:
   release:
     types:
       - released
-  
+
   # push:
   #   tags:
   #     - "**"
@@ -56,11 +56,36 @@ jobs:
         with:
           name: memebox-artifact
           path: MemeBox.zip
-      
+
       - uses: actions/download-artifact@v4
         with:
           name: app-artifact
           path: app.xml
+
+      - name: Get the verison
+        id: get_version
+        run: |
+          echo "VERSION=$(cat app.xml | grep -oPm1 "(?<=<version>)[^<]+")" >> "$GITHUB_OUTPUT"
+
+      - name: Get latest release
+        id: get_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_URL=$(gh api repos/:owner/:repo/releases/latest --jq .upload_url)
+          echo "RELEASE_URL=$RELEASE_URL" >> "$GITHUB_OUTPUT"
+          LATEST_RELEASE_ID=$(gh api repos/:owner/:repo/releases/latest --jq .id)
+          echo "latest_release_id=$LATEST_RELEASE_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Attach built addon to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.RELEASE_URL }}
+          asset_path: ./MemeBox.zip
+          asset_name: MemeBox-v${{ steps.get_version.outputs.VERSION}}.zip
+          asset_content_type: application/zip
 
       - name: scp zip to server
         uses: appleboy/scp-action@master
