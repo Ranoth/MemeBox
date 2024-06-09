@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.26](https://github.com/Ranoth/MemeBox/compare/v1.8.25...v1.8.26) (2024-06-09)
+
+
+### Bug Fixes
+
+* crash when manipulating slider after Audio ([5a68020](https://github.com/Ranoth/MemeBox/commit/5a68020c5dc8152f42d88b006baf6d7d4fb47131))
+* Sounds list not updating while sound is playing ([4d59397](https://github.com/Ranoth/MemeBox/commit/4d593971334a659e0b5c002e16ccc477a72882c7))
+
 ### [1.8.25](https://github.com/Ranoth/MemeBox/compare/v1.8.24...v1.8.25) (2024-06-03)
 
 
