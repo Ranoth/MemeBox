@@ -38,20 +38,23 @@ jobs:
         run: |
           powershell Compress-Archive -Path bin/MemeBox/* -DestinationPath MemeBox.zip
 
-      - name: Get the verison
+      - name: Get the version
         id: get_version
         run: |
-          echo "VERSION=$(cat app.xml | grep -oPm1 "(?<=<version>)[^<]+")" >> "$GITHUB_OUTPUT"
+          $version = Select-String -Path app.xml -Pattern '<version>(.*?)</version>' | % { $_.Matches } | % { $_.Groups[1].Value }
+          echo "VERSION=$version" | Out-File -Append -FilePath $env:GITHUB_ENV
+        shell: powershell
 
       - name: Get latest release
         id: get_release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RELEASE_URL=$(gh api repos/:owner/:repo/releases/latest --jq .upload_url)
-          echo "RELEASE_URL=$RELEASE_URL" >> "$GITHUB_OUTPUT"
-          LATEST_RELEASE_ID=$(gh api repos/:owner/:repo/releases/latest --jq .id)
-          echo "latest_release_id=$LATEST_RELEASE_ID" >> "$GITHUB_OUTPUT"
+          $releaseUrl = gh api repos/:owner/:repo/releases/latest --jq .upload_url
+          echo "RELEASE_URL=$releaseUrl" | Out-File -Append -FilePath $env:GITHUB_ENV
+          $latestReleaseId = gh api repos/:owner/:repo/releases/latest --jq .id
+          echo "latest_release_id=$latestReleaseId" | Out-File -Append -FilePath $env:GITHUB_ENV
+        shell: powershell
 
       - name: Attach build to release
         uses: actions/upload-release-asset@v1
@@ -76,7 +79,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    steps:     
+    steps:
       - uses: actions/download-artifact@v4
         with:
           name: memebox-artifact
