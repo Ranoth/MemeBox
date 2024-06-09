@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using MemeBox.Commands;
 using MemeBox.Models;
 using MemeBox.Stores;
@@ -76,7 +76,7 @@ namespace MemeBox.ViewModels
             sound.Progress = pos;
             Position = pos;
 
-            playersStore.AuxPlayerAudioFileReader.Position = (playersStore.AuxPlayerAudioFileReader.Length / 1000) * pos;
+            if (settingsStore.Settings.SetOutAux != "None") playersStore.AuxPlayerAudioFileReader.Position = (playersStore.AuxPlayerAudioFileReader.Length / 1000) * pos;
             playersStore.MainPlayerAudioFileReader.Position = (playersStore.MainPlayerAudioFileReader.Length / 1000) * pos;
 
             if (!playersStore.WasPaused) playersStore.PlayPlayers();
@@ -98,7 +98,6 @@ namespace MemeBox.ViewModels
                 IsPlaying = true;
                 while (IsPlaying)
                 {
-                    settingsStore.UserSounds.RaiseListChangedEvents = false;
                     if (playersStore.MainPlayerAudioFileReader != null && playersStore.MainPlayer.PlaybackState == PlaybackState.Playing)
                     {
                         // ToDo: Find a fluid way to update the progress bar
@@ -107,17 +106,22 @@ namespace MemeBox.ViewModels
                         var sound = Sounds.FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(playersStore.MainPlayerAudioFileReader.FileName));
                         if (sound != null && sound.Progress != progress && progress <= 990)
                         {
-                            sound.Progress = progress;
                             Position = sound.Progress;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                sound.Progress = progress;
+                            });
                         }
                         if (progress >= 990 || playersStore.MainPlayer.PlaybackState != PlaybackState.Playing)
                         {
-                            sound.Progress = 0;
                             Position = sound.Progress;
                             IsPlaying = false;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                sound.Progress = 0;
+                            });
                         }
                     }
-                    settingsStore.UserSounds.RaiseListChangedEvents = false;
                     Thread.Sleep(50);
                 }
             });
@@ -141,6 +145,12 @@ namespace MemeBox.ViewModels
             {
                 UpdateUserSoundsXml(s, e);
                 SearchSounds(SearchText);
+            };
+            settingsStore.SelectedPlayerChanged += () =>
+            {
+                Position = 0;
+                IsPlaying = false;
+                playersStore.InvokePlaybackStateChanged();
             };
         }
 
@@ -212,10 +222,10 @@ namespace MemeBox.ViewModels
         private void UpdateUserSoundsXml(object? sender, ListChangedEventArgs e)
         {
             var list = sender as BindingList<Sound>;
-            var changeType = e.ListChangedType;
+            var changedType = e.ListChangedType;
             var xDoc = XDocument.Load(settingsStore.UserSoundsFilePath);
 
-            switch (changeType)
+            switch (changedType)
             {
                 case ListChangedType.ItemChanged:
                     {

@@ -1,4 +1,4 @@
-using MemeBox.Models;
+﻿using MemeBox.Models;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System.ComponentModel;
@@ -18,6 +18,7 @@ namespace MemeBox.Stores
         public List<WaveOutCapabilities> AudioOutCapabilities { get; set; } = new();
         private bool allowDrop = false;
         public Action? SettingsWindowOpenChanged;
+        public Action? SelectedPlayerChanged;
         public BindingList<Sound> UserSounds { get; set; } = new();
 
         public bool AllowDrop

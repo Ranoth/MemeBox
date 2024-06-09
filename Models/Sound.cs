@@ -42,13 +42,6 @@ namespace MemeBox.Models
             }
         }
 
-        //public void Progress = (SettingsStore settingsStore, int progress)
-        //{
-        //    settingsStore.UserSounds.RaiseListChangedEvents = false;
-        //    Progress = progress;
-        //    settingsStore.UserSounds.RaiseListChangedEvents = true;
-        //}
-
         private void SetNameBind()
         {
             string bind = HotKey.ToString();
