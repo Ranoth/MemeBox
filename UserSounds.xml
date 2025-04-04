@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserSounds>
+  <UserSound Name="Metal pipe falling sound effect loud" Path="C:\Users\megab\Music\Sounds\Metal pipe falling sound effect loud.mp3">
+    <HotKey Key="None" Modifiers="None" />
+  </UserSound>
+  <UserSound Name="megalovania but every instrument is metal pipe falling sound effect" Path="C:\Users\megab\Music\Sounds\megalovania but every instrument is metal pipe falling sound effect.mp3">
+    <HotKey Key="None" Modifiers="None" />
+  </UserSound>
+</UserSounds>

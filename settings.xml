@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SetOut>Headset Amp (FiiO Q series)</SetOut>
+  <SetOutAux>Voicemeeter Input (VB-Audio Voi</SetOutAux>
+  <VolumeMain>0.4416435</VolumeMain>
+  <VolumeAux>0.3747519</VolumeAux>
+  <PauseButtonHotKey>
+    <Key>None</Key>
+    <Modifiers>None</Modifiers>
+  </PauseButtonHotKey>
+  <ResumeButtonHotKey>
+    <Key>None</Key>
+    <Modifiers>None</Modifiers>
+  </ResumeButtonHotKey>
+</Settings>
