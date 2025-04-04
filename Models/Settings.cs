@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Windows.Forms.Design;
 using System.Windows.Input;
+using System.Xml.Serialization;
 using WPFUtilsBox.HotKeyer;
 
 namespace MemeBox.Models
@@ -40,6 +41,8 @@ namespace MemeBox.Models
             {
                 volumeMain = value;
                 OnPropertyChanged();
+                // Apply logarithmic scaling
+                AdjustedVolumeMain = (float)Math.Pow(volumeMain, 2);
             }
         }
 
@@ -51,8 +54,16 @@ namespace MemeBox.Models
             {
                 volumeAux = value;
                 OnPropertyChanged();
+                // Apply logarithmic scaling
+                AdjustedVolumeAux = (float)Math.Pow(volumeAux, 2);
             }
         }
+
+        // These properties store the adjusted (logarithmic) volume values
+        [XmlIgnore]
+        public float AdjustedVolumeMain { get; private set; } = 0.25f; // Default to 0.5^2
+        [XmlIgnore]
+        public float AdjustedVolumeAux { get; private set; } = 0.25f;  // Default to 0.5^2
 
         private HotKey pauseButtonHotKey = new(Key.None, ModifierKeys.None);
         public HotKey PauseButtonHotKey

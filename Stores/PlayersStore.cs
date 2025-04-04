@@ -32,12 +32,12 @@ namespace MemeBox.Stores
             AuxPlayer.DeviceNumber = settingsStore.AudioOutCapabilities
                 .IndexOf(settingsStore.AudioOutCapabilities
                 .FirstOrDefault(x => x.ProductName == settingsStore.Settings.SetOutAux));
-            AuxPlayer.Volume = settingsStore.Settings.VolumeAux;
+            AuxPlayer.Volume = settingsStore.Settings.AdjustedVolumeAux;
 
             MainPlayer.DeviceNumber = settingsStore.AudioOutCapabilities
                  .IndexOf(settingsStore.AudioOutCapabilities
                  .FirstOrDefault(x => x.ProductName == settingsStore.Settings.SetOut));
-            MainPlayer.Volume = settingsStore.Settings.VolumeMain;
+            MainPlayer.Volume = settingsStore.Settings.AdjustedVolumeMain;
 
             try
             {
