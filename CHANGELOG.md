@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.28](https://github.com/Ranoth/MemeBox/compare/v1.8.27...v1.8.28) (2025-04-04)
+
+
+### Bug Fixes
+
+* Apply logarithmic scaling to the linear volume sliders before applying volume changes ([924c981](https://github.com/Ranoth/MemeBox/commit/924c981f94924d39d419448e19f85afe166c9a55))
+
 ### [1.8.27](https://github.com/Ranoth/MemeBox/compare/v1.8.26...v1.8.27) (2024-06-09)
 
 
