@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.31](https://github.com/Ranoth/MemeBox/compare/v1.8.30...v1.8.31) (2025-04-04)
+
+
+### Bug Fixes
+
+* Actually use logarithmic scaling instead of quadratic scaling ([f505b31](https://github.com/Ranoth/MemeBox/commit/f505b316ddad4efdf5465b9ea892934f693f13ab))
+
 ### [1.8.30](https://github.com/Ranoth/MemeBox/compare/v1.8.29...v1.8.30) (2025-04-04)
 
 ### [1.8.29](https://github.com/Ranoth/MemeBox/compare/v1.8.28...v1.8.29) (2025-04-04)
