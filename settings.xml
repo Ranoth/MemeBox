@@ -5,11 +5,11 @@
   <VolumeMain>0.4416435</VolumeMain>
   <VolumeAux>0.3747519</VolumeAux>
   <PauseButtonHotKey>
-    <Key>None</Key>
+    <Key>Subtract</Key>
     <Modifiers>None</Modifiers>
   </PauseButtonHotKey>
   <ResumeButtonHotKey>
-    <Key>None</Key>
+    <Key>Add</Key>
     <Modifiers>None</Modifiers>
   </ResumeButtonHotKey>
 </Settings>

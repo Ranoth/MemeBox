@@ -72,6 +72,7 @@ namespace MemeBox.Stores
 
         public void PlayPlayers()
         {
+            if (MainPlayerAudioFileReader == null || AuxPlayerAudioFileReader == null) return;
             MainPlayer.Play();
             if (settingsStore.Settings.SetOutAux != "None") AuxPlayer.Play();
             WasPaused = false;
@@ -80,6 +81,8 @@ namespace MemeBox.Stores
 
         public void PausePlayers()
         {
+            if (MainPlayerAudioFileReader == null || AuxPlayerAudioFileReader == null) return;
+            if (MainPlayer == null || AuxPlayer == null) return;
             MainPlayer.Pause();
             if (settingsStore.Settings.SetOutAux != "None") AuxPlayer.Pause();
             PlaybackStateChanged?.Invoke();
