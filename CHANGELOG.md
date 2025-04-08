@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.32](https://github.com/Ranoth/MemeBox/compare/v1.8.31...v1.8.32) (2025-04-08)
+
+
+### Bug Fixes
+
+* Crash when pressing play or pause keybind when first starting app before playing any sound. ([4adecf1](https://github.com/Ranoth/MemeBox/commit/4adecf1ae194e37f470e70876ebb9b049b7b4560))
+
 ### [1.8.31](https://github.com/Ranoth/MemeBox/compare/v1.8.30...v1.8.31) (2025-04-04)
 
 
