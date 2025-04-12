@@ -42,7 +42,7 @@ namespace MemeBox.Models
                 volumeMain = value;
                 OnPropertyChanged();
                 // Apply logarithmic scaling
-                AdjustedVolumeMain = convertToLog(volumeMain);
+                AdjustedVolumeMain = ConvertToLog(volumeMain);
             }
         }
 
@@ -55,7 +55,7 @@ namespace MemeBox.Models
                 volumeAux = value;
                 OnPropertyChanged();
                 // Apply logarithmic scaling
-                AdjustedVolumeAux = convertToLog(volumeAux);
+                AdjustedVolumeAux = ConvertToLog(volumeAux);
             }
         }
 
@@ -98,7 +98,7 @@ namespace MemeBox.Models
             if ((hotKey?.Key ?? Key.None) == Key.None) return $"{buttonName} Playback";
             else return $"{buttonName} Playback -> {hotKey}";
         }
-        private float convertToLog(float value)
+        private float ConvertToLog(float value)
         {
             if (value == 0) return 0;
             return (float)Math.Pow(10, (value - 1) * 2);
